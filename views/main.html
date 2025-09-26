@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Björka</title>
+    <link rel="stylesheet" href="public/style.css">
+</head>
+<body>
+    <main>
+        <section id="home" class="hero-video">
+            <video class="hero-video-el" src="video.mp4" autoplay muted loop playsinline></video>
+            <img id="logo" class="hero-logo" src="Björkalogo.png" alt="Logo" />
+            <nav class="hero-nav" aria-label="Primary">
+                <a href="#home">Home</a>
+                <a href="#recent">List</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </section>
+
+        <section id="recent" class="section">
+            <div class="container">
+                <div class="section-head">
+                    <h2>Exhibitions</h2>
+                </div>
+                <div class="gallery" aria-label="Exhibition image grid">
+                    <figure class="tile">
+                        <a href="#" target="_blank" rel="noopener noreferrer">
+                        <img src="exhibition.jpg" alt="Exhibition 1">
+                        </a>
+                        <figcaption>Light & Shadow</figcaption>
+                    </figure>
+                    <figure class="tile">
+                        <a href="#" target="_blank" rel="noopener noreferrer">
+                        <img src="exhibition2.jpg" alt="Exhibition 2">
+                        </a>
+                        <figcaption>Echoes in Marble</figcaption>
+                    </figure>
+                    <figure class="tile">
+                        <a href="#" target="_blank" rel="noopener noreferrer">
+                        <img src="exhibition3.jpg" alt="Exhibition 3">
+                        </a>
+                        <figcaption>Chromatic Dreams</figcaption>
+                    </figure>
+                    <figure class="tile">
+                        <img src="exhibition4.jpg" alt="Exhibition 4">
+                        <figcaption>Generative Seas</figcaption>
+                    </figure>
+                    <figure class="tile">
+                        <img src="exhibition5.jpg" alt="Exhibition 5">
+                        <figcaption>Northern Lines</figcaption>
+                    </figure>
+                    <figure class="tile">
+                        <img src="interior.jpg" alt="Museum interior">
+                        <figcaption>Steel Garden</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <small>© <span id="year"></span> Björka Museum</small>
+        </div>
+    </footer>
+
+</body>
+</html>
