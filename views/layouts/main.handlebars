@@ -1,31 +1,32 @@
-<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bjorka Home</title>
-    <link rel="stylesheet" href="/public/css/style.css">
-</head>
-
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
     <nav class="hero-nav" aria-label="Primary">
-        <a href="#home">Home</a>
-        <a href="#listofexhibitions">List</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-        <span class="spacer"></span>
-          {{#if session.isLoggedIn}}
-                    Hej, {{session.un}}!
-                    <a href="/logout">Logout</a>
-                {{else}}
-                    <a href="/login">Login</a>
-                {{/if}}
+      <a href="/">Home</a>
+      <a href="/exhibitions">Exhibitions</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <span class="spacer"></span>
+      {{#if session.isLoggedIn}}
+        Hej,
+        {{session.un}}!
+        <a href="/logout">Logout</a>
+      {{else}}
+        <a href="/login">Login</a>
+      {{/if}}
     </nav>
-    {{{body}}}
+    <main>
+      {{{body}}}
+    </main>
     <footer class="site-footer">
-        <div class="container">
-            <small>© <span id="year"></span> Björka Museum</small>
-        </div>
+      <div class="container">
+        <small>© <span id="year"></span> Björka Museum</small>
+      </div>
     </footer>
-</body>
+  </body>
 </html>
