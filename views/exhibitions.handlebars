@@ -1,15 +1,14 @@
-<div id="1">
-  <h1>Our exhibitions</h1>
-  <div>
-    <ul>
-      {{#each exhibitions}}
-        <li class="exhibition-item">
-          <h2>{{name}}</h2>
-          <p>{{description}}</p>
-
-        </li>
-      {{/each}}
-    </ul>
-  </div>
-
+<h1>Our exhibitions</h1>
+<div class="exhibitions-container">
+  {{#each exhibitions}}
+    <div class="exhibition-card">
+      <h2>{{name}} ({{year}})</h2>
+      <p><strong>Location:</strong> {{location}}</p>
+      <p><strong>Type:</strong> {{type}}</p>
+      <p>{{description}}</p>
+      {{#if image}}
+        <img src="{{image}}" alt="{{name}}" class="exhibition-image" />
+      {{/if}}
+    </div>
+  {{/each}}
 </div>
