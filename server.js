@@ -164,15 +164,23 @@ app.post("/login", (req, res) => {
       });
     req.session.isLoggedIn = true;
     req.session.un = user.username;
-    res.redirect("/");
+    res.redirect("/loginprocess");
   });
 });
 app.get("/logout", (req, res) => {
-  req.session.destroy(() => res.redirect("/"));
+  req.session.destroy(() => res.redirect("/loginprocess"));
+});
+
+// Login process page to show status
+app.get("/loginprocess", (req, res) => {
+  res.render("loginprocess", {
+    title: "Login status",
+    loggedIn: !!req.session?.isLoggedIn,
+    un: req.session?.un,
+  });
 });
 
 // Exhibitions page
-
 app.get("/exhibitions", (req, res) => {
   db.all("SELECT * FROM exhibitions", (err, rows) => {
     if (err) {
@@ -202,7 +210,8 @@ db.run(
      password_hash TEXT NOT NULL
   )`
 );
-// where credentials are embedded: the line below stores the bcrypt hash for "wdf#2025"
+
+// Where credentials are embedded: the line below stores the bcrypt hash for "wdf#2025"
 const ADMIN_HASH =
   "$2b$10$EIYwU6NE6V.0gAP8zIfVTeApl6DLjjHjN7FkIyArYqRw3N24xH41W";
 db.get("SELECT id FROM users WHERE username = ?", ["admin"], (err, row) => {
