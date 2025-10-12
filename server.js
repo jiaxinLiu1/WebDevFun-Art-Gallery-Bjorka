@@ -467,31 +467,45 @@ app.get("/", (req, res) => {
   res.render("index", {title: "Björka"});
 });
 
-// Login pages
+// Login
 app.get("/login", (req, res) => {
   res.render("login", {title: "Login"});
 });
 app.post("/login", (req, res) => {
   const {un, pw} = req.body || {};
-  db.get("SELECT * FROM users WHERE username = ?", [un], (err, user) => {
-    if (err || !user)
-      return res.render("login", {
-        title: "Login",
-        error: "Invalid credentials",
-      });
-    const ok = bcrypt.compareSync(pw, user.password_hash);
-    if (!ok)
-      return res.render("login", {
-        title: "Login",
-        error: "Invalid credentials",
-      });
-    req.session.isLoggedIn = true;
-    req.session.un = user.username;
-    res.redirect("/loginprocess");
-  });
+  console.log(`Here comes the data received from the form on the client: ${un} - ${pw} `);
+  if (un === 'admin') {
+    // use seeded bcrypt hash as teacher template expects
+    const adminPassword = ADMIN_HASH; // "wdf#2025" hash
+    bcrypt.compare(pw, adminPassword, (err, result) => {
+      if (err) {
+        console.log('Error in password comparison');
+        return res.render('login', { title: 'Login', error: 'Error in password comparison.' });
+      }
+      if (result) {
+        req.session.isLoggedIn = true;
+        req.session.un = un;
+        req.session.isAdmin = true;
+        console.log('---> SESSION INFORMATION: ', JSON.stringify(req.session));
+        return res.render('loggedin', { title: 'Logged in', un });
+      } else {
+        console.log('Wrong password');
+        return res.render('login', { title: 'Login', error: 'Wrong password! Please try again.' });
+      }
+    });
+  } else {
+    console.log('Wrong username');
+    return res.render('login', { title: 'Login', error: 'Wrong username! Please try again.' });
+  }
 });
+
 app.get("/logout", (req, res) => {
-  req.session.destroy(() => res.redirect("/loginprocess"));
+  req.session.destroy((err) => {
+    if (err) {
+      console.log('Error while destroying the session: ', err);
+    }
+    res.redirect('/');
+  });
 });
 
 // Login process page to show status
