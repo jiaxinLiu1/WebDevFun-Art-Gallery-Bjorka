@@ -508,15 +508,6 @@ app.get("/logout", (req, res) => {
   });
 });
 
-// Login process page to show status
-app.get("/loginprocess", (req, res) => {
-  res.render("loginprocess", {
-    title: "Login status",
-    loggedIn: !!req.session?.isLoggedIn,
-    un: req.session?.un,
-  });
-});
-
 // Exhibitions page
 app.get("/exhibitions", (req, res) => {
   db.all("SELECT * FROM exhibitions ORDER BY id ASC", [], (err, rows) => {
@@ -525,6 +516,38 @@ app.get("/exhibitions", (req, res) => {
   });
 });
 //Exhibition details page
+app.post('/exhibitions', (req, res) => {
+  if (!req.session?.isAdmin) return res.redirect('/login');
+  const { name, location, year, type, description, image_url } = req.body || {};
+  db.run(
+    'INSERT INTO exhibitions (id, name, location, description, year, type, image_url) VALUES ((SELECT IFNULL(MAX(id),0)+1 FROM exhibitions), ?, ?, ?, ?, ?, ?)',
+    [name, location, description, Number(year) || null, type, image_url || null],
+    (err)=>{
+      if (err) return res.send('Insert error');
+      res.redirect('/exhibitions');
+    }
+  );
+});
+app.post('/exhibitions/update/:id', (req, res) => {
+  if (!req.session?.isAdmin) return res.redirect('/login');
+  const { name, location, year, type, description, image_url } = req.body || {};
+  db.run(
+    'UPDATE exhibitions SET name = ?, location = ?, year = ?, type = ?, description = ?, image_url = ? WHERE id = ?',
+    [name, location, Number(year) || null, type, description, image_url || null, req.params.id],
+    (err)=>{
+      if (err) return res.send('Update error');
+      res.redirect('/exhibition/' + req.params.id);
+    }
+  );
+});
+app.post('/exhibitions/delete/:id', (req, res) => {
+  if (!req.session?.isAdmin) return res.redirect('/login');
+  db.run('DELETE FROM exhibitions WHERE id = ?', [req.params.id], (err)=>{
+    if (err) return res.send('Delete error');
+    res.redirect('/exhibitions');
+  });
+});
+
 app.get("/exhibition/:id", (req, res) => {
   const exId = req.params.id;
 
@@ -541,12 +564,7 @@ app.get("/exhibition/:id", (req, res) => {
         [exId],
         (err2, artists) => {
           if (err2) return res.send("Error loading artists");
-
-          //
-          res.render("exhibition-details", {
-            exhibition,
-            artists,
-          });
+          res.render("exhibition-details", { exhibition, artists });
         }
       );
     }

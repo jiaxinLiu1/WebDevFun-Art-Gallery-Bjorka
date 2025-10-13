@@ -1,4 +1,19 @@
 <h1>Our exhibitions</h1>
+
+{{#if session.isAdmin}}
+  <h3>New exhibition</h3>
+  <form method="POST" action="/exhibitions">
+    <label>Name <input name="name" required></label><br>
+    <label>Location <input name="location" required></label><br>
+    <label>Year <input name="year" type="number" required></label><br>
+    <label>Type <input name="type" required></label><br>
+    <label>Description <input name="description" required></label><br>
+    <label>Image URL <input name="image_url"></label><br>
+    <button type="submit">Create</button>
+  </form>
+  <hr />
+{{/if}}
+
 {{#each exhibitions}}
   <div class="exhibition">
     <img src="{{image_url}}" alt="{{name}}" />

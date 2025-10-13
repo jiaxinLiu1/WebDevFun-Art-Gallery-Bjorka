@@ -11,6 +11,23 @@
 
 <hr />
 
+{{#if session.isAdmin}}
+  <h3>Edit</h3>
+  <form method="POST" action="/exhibitions/update/{{exhibition.id}}">
+    <label>Name <input name="name" value="{{exhibition.name}}" required></label><br>
+    <label>Location <input name="location" value="{{exhibition.location}}" required></label><br>
+    <label>Year <input name="year" type="number" value="{{exhibition.year}}" required></label><br>
+    <label>Type <input name="type" value="{{exhibition.type}}" required></label><br>
+    <label>Description <input name="description" value="{{exhibition.description}}" required></label><br>
+    <label>Image URL <input name="image_url" value="{{exhibition.image_url}}"></label><br>
+    <button type="submit">Update</button>
+  </form>
+  <form style="margin-top:8px" method="POST" action="/exhibitions/delete/{{exhibition.id}}">
+    <button type="submit">Delete</button>
+  </form>
+  <hr />
+{{/if}}
+
 <h2>Artists in this Exhibition</h2>
 <ul>
   {{#each artists}}
