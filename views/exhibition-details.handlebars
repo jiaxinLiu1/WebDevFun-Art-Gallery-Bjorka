@@ -1,9 +1,9 @@
-<h1>{{exhibition.ename}}</h1>
-<p><strong>Year:</strong> {{exhibition.eyear}}</p>
-<p><strong>Location:</strong> {{exhibition.elocation}}</p>
-<p><strong>Type:</strong> {{exhibition.etype}}</p>
-<p>{{exhibition.edesc}}</p>
-<img src="{{exhibition.eimgURL}}" alt="{{exhibition.ename}}" />
+<h1>{{exhibition.name}}</h1>
+<p><strong>Year:</strong> {{exhibition.year}}</p>
+<p><strong>Location:</strong> {{exhibition.location}}</p>
+<p><strong>Type:</strong> {{exhibition.type}}</p>
+<p>{{exhibition.description}}</p>
+<img src="{{exhibition.image_url}}" alt="{{exhibition.name}}" />
 
 <hr />
 
@@ -29,6 +29,7 @@
     </label><br />
     <button type="submit">Update</button>
   </form>
+
   <form method="POST" action="/exhibitions/delete/{{exhibition.id}}">
     <button type="submit">Delete</button>
   </form>
@@ -66,4 +67,4 @@
   <p>No artworks found for this exhibition.</p>
 {{/unless}}
 
-<a href="/exhibitions/{{exhibition.ex_id}}">{{exhibition.ename}}</a>
+<a href="/exhibitions/{{exhibition.id}}">{{exhibition.name}}</a>
