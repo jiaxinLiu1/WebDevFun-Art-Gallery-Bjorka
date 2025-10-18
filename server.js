@@ -1,3 +1,20 @@
+/*
+Jiaxin Liu - 
+Yuhong Jiang - jiyu24ln@student.ju.se
+
+Target grade:
+
+Project Web Dev Fun - 2025
+
+Administrator login: admin
+Administrator password: "wdf#2025"
+
+- Some code in this project where generated with the help of ChatGPT
+- Several images and videos come from the web (not made by us): pexels.
+
+*/
+
+
 // PACKAGES
 const express = require("express");
 const path = require("path");
@@ -157,7 +174,7 @@ CREATE TABLE IF NOT EXISTS exhibitions (
                 ex.description,
                 ex.year,
                 ex.type,
-                ex.image_url,
+                ex.image,
               ],
               (err) => {
                 if (err) {
@@ -424,7 +441,7 @@ CREATE TABLE IF NOT EXISTS artists (
                 ex.nationality,
                 ex.age,
                 ex.famous_work,
-                ex.image,
+                ex.image_url,
               ],
               (err) => {
                 if (err) {
