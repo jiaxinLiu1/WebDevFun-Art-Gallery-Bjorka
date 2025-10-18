@@ -851,14 +851,14 @@ app.get("/exhibitions/:exid", (req, res) => {
 
     // Extract exhibition info (all rows have same exhibition data)
     const exhibition = {
-      ename: rows[0].ex_name,
-      eyear: rows[0].ex_year,
-      elocation: rows[0].ex_location,
-      etype: rows[0].ex_type,
-      edesc: rows[0].ex_desc,
-      eimgURL: rows[0].ex_img,
+      id: rows[0].ex_id,
+      name: rows[0].ex_name,
+      location: rows[0].ex_location,
+      year: rows[0].ex_year,
+      type: rows[0].ex_type,
+      description: rows[0].ex_desc,
+      image_url: rows[0].ex_img,
     };
-
     // Extract unique artists
     const artists = [
       ...new Map(
@@ -899,7 +899,7 @@ app.get("/exhibitions/:exid", (req, res) => {
     );
 
     const model = {
-      ...exhibition,
+      exhibition: exhibition,
       artists: artists,
       artworks: artworks,
     };
