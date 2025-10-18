@@ -3,12 +3,12 @@
 {{#if session.isAdmin}}
   <h3>New exhibition</h3>
   <form method="POST" action="/exhibitions">
-    <label>Name <input name="name" required></label><br>
-    <label>Location <input name="location" required></label><br>
-    <label>Year <input name="year" type="number" required></label><br>
-    <label>Type <input name="type" required></label><br>
-    <label>Description <input name="description" required></label><br>
-    <label>Image URL <input name="image_url"></label><br>
+    <label>Name <input name="name" required /></label><br />
+    <label>Location <input name="location" required /></label><br />
+    <label>Year <input name="year" type="number" required /></label><br />
+    <label>Type <input name="type" required /></label><br />
+    <label>Description <input name="description" required /></label><br />
+    <label>Image URL <input name="image_url" /></label><br />
     <button type="submit">Create</button>
   </form>
   <hr />
@@ -22,7 +22,7 @@
     <p><strong>Location:</strong> {{location}}</p>
     <p><strong>Type:</strong> {{type}}</p>
     <p><strong>Description:</strong> {{description}}</p>
-    <a href="/exhibition/{{id}}">View Details</a>
+    <a href="/exhibitions/{{id}}">View Details</a>
     <hr />
   </div>
 {{/each}}

@@ -162,7 +162,7 @@ CREATE TABLE IF NOT EXISTS exhibitions (
           } else {
             console.log("Old exhibitions deleted");
           }
-          //create new data
+          //create new data，insert each exhibition into the table
           exhibitions.forEach((ex) => {
             mydb.run(
               "INSERT INTO exhibitions (id, name, location, description, year, type, image_url) VALUES (?, ?, ?, ?, ?, ?,?)",
@@ -191,6 +191,7 @@ CREATE TABLE IF NOT EXISTS exhibitions (
 }
 
 // DATABASE table2-artists
+
 function initTableArtists(mydb) {
   const artists = [
     {
@@ -456,7 +457,6 @@ CREATE TABLE IF NOT EXISTS artists (
     }
   );
 }
-
 // DATABASE table3-artworks
 function initTableArtworks(mydb) {
   const artworks = [
@@ -807,12 +807,13 @@ app.post("/exhibitions/delete/:id", (req, res) => {
   });
 });
 
-// inner join in tables
+// inner join in tables (Retrieve a single exhibition with its artists and artworks)
 app.get("/exhibitions/:exid", (req, res) => {
+  //get the exhibition ID from URL parameters
   const myEid = req.params.exid;
-  //use chatgpt on Use gpt naming to ensure the correct map deduplication logic and avoid failure due to column name conflicts.
+  //use chatgpt on Use gpt naming (Aliases-AS) to ensure the correct map deduplication logic and avoid failure due to column name conflicts
+  //join artists and artworks related to exhibition,filter by the provided exhibition ID
   const query = `
-  
     SELECT 
     e.id AS ex_id,
     e.name AS ex_name,
@@ -839,8 +840,9 @@ app.get("/exhibitions/:exid", (req, res) => {
     INNER JOIN artworks aw ON e.id = aw.exhibition_id
     WHERE e.id = ?;
   `;
-
+  //execute the query
   db.all(query, [myEid], (err, rows) => {
+    // if error or no rows found
     if (err || rows.length === 0) {
       console.error(err?.message);
       return res.render("one-exhibition", {error: "Exhibition not found."});
@@ -849,7 +851,7 @@ app.get("/exhibitions/:exid", (req, res) => {
     console.log(`---> Retrieved ${rows.length} rows from the database.`);
     console.log(`--> Rows: ${JSON.stringify(rows)}`);
 
-    // Extract exhibition info (all rows have same exhibition data)
+    // extract exhibition information (all rows have same exhibition data)
     const exhibition = {
       id: rows[0].ex_id,
       name: rows[0].ex_name,
@@ -859,10 +861,12 @@ app.get("/exhibitions/:exid", (req, res) => {
       description: rows[0].ex_desc,
       image_url: rows[0].ex_img,
     };
-    // Extract unique artists
+    // extract unique artists using Map to deduplicate by artist_id
     const artists = [
       ...new Map(
         rows.map((row) => [
+          //Use artist_id as the key for the Map this ensures that each artist appears only once,
+          // even if the SQL JOIN query repeats them across multiple rows
           row.artist_id,
           {
             id: row.artist_id,
@@ -873,10 +877,11 @@ app.get("/exhibitions/:exid", (req, res) => {
             image_url: row.artist_img,
           },
         ])
+        // Map automatically keeps only the last occurrence of each key,effectively deduplicating the artists.
       ).values(),
     ];
 
-    // Extract unique artworks
+    // extract unique artworks using Map to deduplicate by artwork_id
     const artworks = [
       ...new Map(
         rows.map((row) => [
@@ -890,21 +895,21 @@ app.get("/exhibitions/:exid", (req, res) => {
         ])
       ).values(),
     ];
-
+    // debug logs for artists and artworks
     console.log(
       `---> Artists in this exhibition: ${artists.map((a) => a.name)}`
     );
     console.log(
       `---> Artworks in this exhibition: ${artworks.map((a) => a.title)}`
     );
-
+    // prepare model to pass to template
     const model = {
       exhibition: exhibition,
       artists: artists,
       artworks: artworks,
     };
-
-    res.render("one-exhibition", model);
+    // render exhibition-details page with model
+    res.render("exhibition-details", model);
   });
 });
 
