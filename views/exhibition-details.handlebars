@@ -1,24 +1,47 @@
-<h1>{{exhibition.name}}</h1>
-<p><strong>Year:</strong> {{exhibition.year}}</p>
-<p><strong>Location:</strong> {{exhibition.location}}</p>
-<p><strong>Type:</strong> {{exhibition.type}}</p>
-<p>{{exhibition.description}}</p>
-<img src="{{exhibition.image_url}}" alt="{{exhibition.name}}" style="max-width:300px;" />
+<h1>{{exhibition.ename}}</h1>
+<p><strong>Year:</strong> {{exhibition.eyear}}</p>
+<p><strong>Location:</strong> {{exhibition.elocation}}</p>
+<p><strong>Type:</strong> {{exhibition.etype}}</p>
+<p>{{exhibition.edesc}}</p>
+<img src="{{exhibition.eimgURL}}" alt="{{exhibition.ename}}" />
 
 <hr />
 
 {{#if session.isAdmin}}
   <h3>Edit</h3>
   <form method="POST" action="/exhibitions/update/{{exhibition.id}}">
-    <label>Name <input name="name" value="{{exhibition.name}}" required></label><br>
-    <label>Location <input name="location" value="{{exhibition.location}}" required></label><br>
-    <label>Year <input name="year" type="number" value="{{exhibition.year}}" required></label><br>
-    <label>Type <input name="type" value="{{exhibition.type}}" required></label><br>
-    <label>Description <input name="description" value="{{exhibition.description}}" required></label><br>
-    <label>Image URL <input name="image_url" value="{{exhibition.image_url}}"></label><br>
+    <label>Name
+      <input name="name" value="{{exhibition.name}}" required /></label><br />
+    <label>Location
+      <input
+        name="location"
+        value="{{exhibition.location}}"
+        required
+      /></label><br />
+    <label>Year
+      <input
+        name="year"
+        type="number"
+        value="{{exhibition.year}}"
+        required
+      /></label><br />
+    <label>Type
+      <input name="type" value="{{exhibition.type}}" required /></label><br />
+    <label>Description
+      <input
+        name="description"
+        value="{{exhibition.description}}"
+        required
+      /></label><br />
+    <label>Image URL
+      <input name="image_url" value="{{exhibition.image_url}}" /></label><br />
     <button type="submit">Update</button>
   </form>
-  <form style="margin-top:8px" method="POST" action="/exhibitions/delete/{{exhibition.id}}">
+  <form
+    style="margin-top:8px"
+    method="POST"
+    action="/exhibitions/delete/{{exhibition.id}}"
+  >
     <button type="submit">Delete</button>
   </form>
   <hr />
@@ -27,12 +50,12 @@
 <h2>Artists in this Exhibition</h2>
 <ul>
   {{#each artists}}
-    <li style="margin-bottom:20px;">
+    <li>
       <h3>{{name}}</h3>
       <p><strong>Nationality:</strong> {{nationality}}</p>
       <p><strong>Age:</strong> {{age}}</p>
       <p><strong>Famous Work:</strong> {{famous_work}}</p>
-      <img src="{{image_url}}" alt="{{name}}" style="max-width:200px;" />
+      <img src="{{image_url}}" alt="{{name}}" />
     </li>
   {{/each}}
 </ul>
@@ -41,4 +64,19 @@
   <p>No artists found for this exhibition.</p>
 {{/unless}}
 
-<a href="/exhibitions">← Back to all exhibitions</a>
+<h2>Artworks in this Exhibition</h2>
+<ul>
+  {{#each artworks}}
+    <li>
+      <h3>{{title}}</h3>
+      <p><strong>Medium:</strong> {{medium}}</p>
+      <p>{{rewords}}</p>
+    </li>
+  {{/each}}
+</ul>
+
+{{#unless artworks}}
+  <p>No artworks found for this exhibition.</p>
+{{/unless}}
+
+<a href="/exhibitions/{{id}}">{{name}}</a>

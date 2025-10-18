@@ -1,5 +1,5 @@
 /*
-Jiaxin Liu - 
+Jiaxin Liu - liji23zn@student.ju.se
 Yuhong Jiang - jiyu24ln@student.ju.se
 
 Target grade:
@@ -13,7 +13,6 @@ Administrator password: "wdf#2025"
 - Several images and videos come from the web (not made by us): pexels.
 
 */
-
 
 // PACKAGES
 const express = require("express");
@@ -421,7 +420,7 @@ CREATE TABLE IF NOT EXISTS artists (
       if (error) {
         console.log("Error creating table:", error);
       } else {
-        console.log("Table exhibitions created successfully!");
+        console.log("Table artists created successfully!");
 
         // remove old data
         mydb.run("DELETE FROM artists", [], (err) => {
@@ -448,6 +447,221 @@ CREATE TABLE IF NOT EXISTS artists (
                   console.log("Error inserting record:", err);
                 } else {
                   console.log("Added artists:", ex.name);
+                }
+              }
+            );
+          });
+        });
+      }
+    }
+  );
+}
+
+// DATABASE table3-artworks
+function initTableArtworks(mydb) {
+  const artworks = [
+    {
+      exhibition_id: 1,
+      title: "Light Shadows",
+      rewords: "Exploring interplay of light and darkness",
+      medium: "Photography",
+    },
+    {
+      exhibition_id: 1,
+      title: "Dark Lines",
+      rewords: "Contrast between shadow and line",
+      medium: "Photography",
+    },
+    {
+      exhibition_id: 1,
+      title: "Shadow Play",
+      rewords: "Play of light and shadow in abstract forms",
+      medium: "Photography",
+    },
+
+    {
+      exhibition_id: 2,
+      title: "Echoes Sculpture",
+      rewords: "Modern reinterpretation of classical sculpture",
+      medium: "Marble Sculpture",
+    },
+    {
+      exhibition_id: 2,
+      title: "Marble Whispers",
+      rewords: "Delicate marble carving emphasizing echoes of past",
+      medium: "Marble Sculpture",
+    },
+    {
+      exhibition_id: 2,
+      title: "Stone Flow",
+      rewords: "Fluid movement in solid material",
+      medium: "Marble Sculpture",
+    },
+
+    {
+      exhibition_id: 3,
+      title: "Chromatic Dreams Series",
+      rewords: "Emotional exploration through colors",
+      medium: "Painting",
+    },
+    {
+      exhibition_id: 3,
+      title: "Color Emotion",
+      rewords: "Abstract color patterns evoke feelings",
+      medium: "Painting",
+    },
+    {
+      exhibition_id: 3,
+      title: "Abstract Emotion",
+      rewords: "Emotional abstraction through paint",
+      medium: "Painting",
+    },
+
+    {
+      exhibition_id: 4,
+      title: "Generative Sea Waves",
+      rewords: "AI-generated oceanic patterns",
+      medium: "Digital Art",
+    },
+    {
+      exhibition_id: 4,
+      title: "AI Ocean",
+      rewords: "Artificial intelligence simulates ocean aesthetics",
+      medium: "Digital Art",
+    },
+    {
+      exhibition_id: 4,
+      title: "Digital Tide",
+      rewords: "Dynamic digital visualization of tides",
+      medium: "Digital Art",
+    },
+
+    {
+      exhibition_id: 5,
+      title: "Northern Lines Prints",
+      rewords: "Minimalist geometric Nordic landscapes",
+      medium: "Graphic Design",
+    },
+    {
+      exhibition_id: 5,
+      title: "Nordic Geometry",
+      rewords: "Geometry-inspired representations of nature",
+      medium: "Graphic Design",
+    },
+    {
+      exhibition_id: 5,
+      title: "Minimalist Lines",
+      rewords: "Minimalist approach to Nordic scenery",
+      medium: "Graphic Design",
+    },
+
+    {
+      exhibition_id: 6,
+      title: "Steel Garden Installation",
+      rewords: "Industrial sculpture representing organic forms",
+      medium: "Installation",
+    },
+    {
+      exhibition_id: 6,
+      title: "Industrial Nature",
+      rewords: "Fusion of steel and natural shapes",
+      medium: "Installation",
+    },
+    {
+      exhibition_id: 6,
+      title: "Organic Steel",
+      rewords: "Steel works resembling plants",
+      medium: "Installation",
+    },
+
+    {
+      exhibition_id: 7,
+      title: "Nordic Nature Fusion",
+      rewords: "Combination of photography and painting",
+      medium: "Mixed Media",
+    },
+    {
+      exhibition_id: 7,
+      title: "Scandinavian Wilderness",
+      rewords: "Capturing the essence of Scandinavian landscapes",
+      medium: "Mixed Media",
+    },
+
+    {
+      exhibition_id: 8,
+      title: "East Meets West",
+      rewords: "Cross-cultural integration of ink and oil",
+      medium: "Painting",
+    },
+    {
+      exhibition_id: 8,
+      title: "Ink & Oil Fusion",
+      rewords: "Blending Chinese ink and Western oil techniques",
+      medium: "Painting",
+    },
+
+    {
+      exhibition_id: 9,
+      title: "Abstract Evolution",
+      rewords: "Tracing abstract expressionism development",
+      medium: "Painting",
+    },
+    {
+      exhibition_id: 9,
+      title: "Modern Abstract",
+      rewords: "Contemporary abstract techniques",
+      medium: "Painting",
+    },
+
+    {
+      exhibition_id: 10,
+      title: "Colors of Africa",
+      rewords: "Vibrant representation of African identity",
+      medium: "Contemporary Art",
+    },
+    {
+      exhibition_id: 10,
+      title: "African Rhythm",
+      rewords: "Rhythmic color patterns expressing African culture",
+      medium: "Contemporary Art",
+    },
+  ];
+
+  //create table-3(artworks) and insert data at startup
+  mydb.run(
+    `
+CREATE TABLE IF NOT EXISTS artworks (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  exhibition_id INTEGER NOT NULL,
+  title TEXT NOT NULL,
+  rewords TEXT,
+  medium TEXT
+)`,
+    (error) => {
+      if (error) {
+        console.log("Error creating table artworks:", error);
+      } else {
+        console.log("Table artworks created successfully!");
+
+        // remove old data
+        mydb.run("DELETE FROM artworks", [], (err) => {
+          if (err) {
+            console.log("Error clearing table:", err);
+            return;
+          } else {
+            console.log("Old artworks deleted");
+          }
+
+          // insert new data
+          artworks.forEach((art) => {
+            mydb.run(
+              "INSERT INTO artworks (exhibition_id, title, rewords, medium) VALUES (?, ?, ?, ?)",
+              [art.exhibition_id, art.title, art.rewords, art.medium],
+              (err) => {
+                if (err) {
+                  console.log("Error inserting artwork record:", err);
+                } else {
+                  console.log("Added artwork:", art.title);
                 }
               }
             );
@@ -490,38 +704,49 @@ app.get("/login", (req, res) => {
 });
 app.post("/login", (req, res) => {
   const {un, pw} = req.body || {};
-  console.log(`Here comes the data received from the form on the client: ${un} - ${pw} `);
-  if (un === 'admin') {
+  console.log(
+    `Here comes the data received from the form on the client: ${un} - ${pw} `
+  );
+  if (un === "admin") {
     // use seeded bcrypt hash as teacher template expects
     const adminPassword = ADMIN_HASH; // "wdf#2025" hash
     bcrypt.compare(pw, adminPassword, (err, result) => {
       if (err) {
-        console.log('Error in password comparison');
-        return res.render('login', { title: 'Login', error: 'Error in password comparison.' });
+        console.log("Error in password comparison");
+        return res.render("login", {
+          title: "Login",
+          error: "Error in password comparison.",
+        });
       }
       if (result) {
         req.session.isLoggedIn = true;
         req.session.un = un;
         req.session.isAdmin = true;
-        console.log('---> SESSION INFORMATION: ', JSON.stringify(req.session));
-        return res.render('loggedin', { title: 'Logged in', un });
+        console.log("---> SESSION INFORMATION: ", JSON.stringify(req.session));
+        return res.render("loggedin", {title: "Logged in", un});
       } else {
-        console.log('Wrong password');
-        return res.render('login', { title: 'Login', error: 'Wrong password! Please try again.' });
+        console.log("Wrong password");
+        return res.render("login", {
+          title: "Login",
+          error: "Wrong password! Please try again.",
+        });
       }
     });
   } else {
-    console.log('Wrong username');
-    return res.render('login', { title: 'Login', error: 'Wrong username! Please try again.' });
+    console.log("Wrong username");
+    return res.render("login", {
+      title: "Login",
+      error: "Wrong username! Please try again.",
+    });
   }
 });
 
 app.get("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      console.log('Error while destroying the session: ', err);
+      console.log("Error while destroying the session: ", err);
     }
-    res.redirect('/');
+    res.redirect("/");
   });
 });
 
@@ -533,59 +758,154 @@ app.get("/exhibitions", (req, res) => {
   });
 });
 //Exhibition details page
-app.post('/exhibitions', (req, res) => {
-  if (!req.session?.isAdmin) return res.redirect('/login');
-  const { name, location, year, type, description, image_url } = req.body || {};
+app.post("/exhibitions", (req, res) => {
+  if (!req.session?.isAdmin) return res.redirect("/login");
+  const {name, location, year, type, description, image_url} = req.body || {};
   db.run(
-    'INSERT INTO exhibitions (id, name, location, description, year, type, image_url) VALUES ((SELECT IFNULL(MAX(id),0)+1 FROM exhibitions), ?, ?, ?, ?, ?, ?)',
-    [name, location, description, Number(year) || null, type, image_url || null],
-    (err)=>{
-      if (err) return res.send('Insert error');
-      res.redirect('/exhibitions');
+    "INSERT INTO exhibitions (id, name, location, description, year, type, image_url) VALUES ((SELECT IFNULL(MAX(id),0)+1 FROM exhibitions), ?, ?, ?, ?, ?, ?)",
+    [
+      name,
+      location,
+      description,
+      Number(year) || null,
+      type,
+      image_url || null,
+    ],
+    (err) => {
+      if (err) return res.send("Insert error");
+      res.redirect("/exhibitions");
     }
   );
 });
-app.post('/exhibitions/update/:id', (req, res) => {
-  if (!req.session?.isAdmin) return res.redirect('/login');
-  const { name, location, year, type, description, image_url } = req.body || {};
+//update
+app.post("/exhibitions/update/:id", (req, res) => {
+  if (!req.session?.isAdmin) return res.redirect("/login");
+  const {name, location, year, type, description, image_url} = req.body || {};
   db.run(
-    'UPDATE exhibitions SET name = ?, location = ?, year = ?, type = ?, description = ?, image_url = ? WHERE id = ?',
-    [name, location, Number(year) || null, type, description, image_url || null, req.params.id],
-    (err)=>{
-      if (err) return res.send('Update error');
-      res.redirect('/exhibition/' + req.params.id);
+    "UPDATE exhibitions SET name = ?, location = ?, year = ?, type = ?, description = ?, image_url = ? WHERE id = ?",
+    [
+      name,
+      location,
+      Number(year) || null,
+      type,
+      description,
+      image_url || null,
+      req.params.id,
+    ],
+    (err) => {
+      if (err) return res.send("Update error");
+      res.redirect("/exhibitions/" + req.params.id);
     }
   );
 });
-app.post('/exhibitions/delete/:id', (req, res) => {
-  if (!req.session?.isAdmin) return res.redirect('/login');
-  db.run('DELETE FROM exhibitions WHERE id = ?', [req.params.id], (err)=>{
-    if (err) return res.send('Delete error');
-    res.redirect('/exhibitions');
+//delete
+app.post("/exhibitions/delete/:id", (req, res) => {
+  if (!req.session?.isAdmin) return res.redirect("/login");
+  db.run("DELETE FROM exhibitions WHERE id = ?", [req.params.id], (err) => {
+    if (err) return res.send("Delete error");
+    res.redirect("/exhibitions");
   });
 });
 
-app.get("/exhibition/:id", (req, res) => {
-  const exId = req.params.id;
+// inner join in tables
+app.get("/exhibitions/:exid", (req, res) => {
+  const myEid = req.params.exid;
+  //use chatgpt on Use gpt naming to ensure the correct map deduplication logic and avoid failure due to column name conflicts.
+  const query = `
+  
+    SELECT 
+    e.id AS ex_id,
+    e.name AS ex_name,
+    e.year AS ex_year,
+    e.location AS ex_location,
+    e.type AS ex_type,
+    e.description AS ex_desc,
+    e.image_url AS ex_img,
+    
+    a.id AS artist_id,
+    a.name AS artist_name,
+    a.nationality AS artist_nationality,
+    a.age AS artist_age,
+    a.famous_work AS artist_famous_work,
+    a.image_url AS artist_img,
+    
+    aw.id AS artwork_id,
+    aw.title AS artwork_title,
+    aw.rewords AS artwork_rewords,
+    aw.medium AS artwork_medium
 
-  // search the exhibition
-  db.get(
-    "SELECT * FROM exhibitions WHERE id = ?",
-    [exId],
-    (err, exhibition) => {
-      if (err || !exhibition) return res.send("Exhibition not found");
+    FROM exhibitions e
+    INNER JOIN artists a ON e.id = a.exhibition_id
+    INNER JOIN artworks aw ON e.id = aw.exhibition_id
+    WHERE e.id = ?;
+  `;
 
-      // search the artists of the exhibition
-      db.all(
-        "SELECT * FROM artists WHERE exhibition_id = ?",
-        [exId],
-        (err2, artists) => {
-          if (err2) return res.send("Error loading artists");
-          res.render("exhibition-details", { exhibition, artists });
-        }
-      );
+  db.all(query, [myEid], (err, rows) => {
+    if (err || rows.length === 0) {
+      console.error(err?.message);
+      return res.render("one-exhibition", {error: "Exhibition not found."});
     }
-  );
+
+    console.log(`---> Retrieved ${rows.length} rows from the database.`);
+    console.log(`--> Rows: ${JSON.stringify(rows)}`);
+
+    // Extract exhibition info (all rows have same exhibition data)
+    const exhibition = {
+      ename: rows[0].ex_name,
+      eyear: rows[0].ex_year,
+      elocation: rows[0].ex_location,
+      etype: rows[0].ex_type,
+      edesc: rows[0].ex_desc,
+      eimgURL: rows[0].ex_img,
+    };
+
+    // Extract unique artists
+    const artists = [
+      ...new Map(
+        rows.map((row) => [
+          row.artist_id,
+          {
+            id: row.artist_id,
+            name: row.artist_name,
+            nationality: row.artist_nationality,
+            age: row.artist_age,
+            famous_work: row.artist_famous_work,
+            image_url: row.artist_img,
+          },
+        ])
+      ).values(),
+    ];
+
+    // Extract unique artworks
+    const artworks = [
+      ...new Map(
+        rows.map((row) => [
+          row.artwork_id,
+          {
+            id: row.artwork_id,
+            title: row.artwork_title,
+            rewords: row.artwork_rewords,
+            medium: row.artwork_medium,
+          },
+        ])
+      ).values(),
+    ];
+
+    console.log(
+      `---> Artists in this exhibition: ${artists.map((a) => a.name)}`
+    );
+    console.log(
+      `---> Artworks in this exhibition: ${artworks.map((a) => a.title)}`
+    );
+
+    const model = {
+      ...exhibition,
+      artists: artists,
+      artworks: artworks,
+    };
+
+    res.render("one-exhibition", model);
+  });
 });
 
 // About page
@@ -622,5 +942,6 @@ db.get("SELECT id FROM users WHERE username = ?", ["admin"], (err, row) => {
 app.listen(port, function () {
   initTableExhibitions(db);
   initTableArtists(db);
+  initTableArtworks(db);
   console.log("Server is listening on port " + port + "...");
 });
