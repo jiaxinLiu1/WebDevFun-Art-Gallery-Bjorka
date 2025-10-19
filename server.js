@@ -2,7 +2,7 @@
 Jiaxin Liu - liji23zn@student.ju.se
 Yuhong Jiang - jiyu24ln@student.ju.se
 
-Target grade:
+Target grade: 5
 
 Project Web Dev Fun - 2025
 
@@ -34,14 +34,16 @@ const db = new sqlite3.Database(dbFile);
 
 // Multer configuration: save uploads into public/images
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, path.join(__dirname, "public", "images")),
+  destination: (req, file, cb) =>
+    cb(null, path.join(__dirname, "public", "images")),
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname || "");
-    const name = "upload-" + Date.now() + "-" + Math.round(Math.random()*1e6) + ext;
+    const name =
+      "upload-" + Date.now() + "-" + Math.round(Math.random() * 1e6) + ext;
     cb(null, name);
-  }
+  },
 });
-const upload = multer({ storage });
+const upload = multer({storage});
 
 // DATABASE table1-exhibition
 function initTableExhibitions(mydb) {
@@ -684,7 +686,7 @@ CREATE TABLE IF NOT EXISTS artworks (
   );
 }
 
-// MIDDLEWARES
+//middleware
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(__dirname));
 
@@ -694,7 +696,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// HANDLEBARS SETTINGS
+//handlebars settings
 app.engine(
   "handlebars",
   engine({
@@ -705,14 +707,14 @@ app.engine(
 app.set("view engine", "handlebars");
 app.set("views", path.join(__dirname, "views"));
 
-// ROUTES
+// routes
 app.get("/", (req, res) => {
   res.render("index", {title: "Björka"});
 });
 
 // admin only for data modifications
 function requireAdmin(req, res, next) {
-  if (!req.session || !req.session.isAdmin) return res.redirect('/login');
+  if (!req.session || !req.session.isAdmin) return res.redirect("/login");
   next();
 }
 
@@ -722,18 +724,29 @@ app.get("/login", (req, res) => {
 });
 app.post("/login", (req, res) => {
   const {un, pw} = req.body || {};
-  db.get('SELECT id, username, password_hash, COALESCE(isAdmin,0) as isAdmin FROM users WHERE username = ?', [un], (err, user) => {
-    if (err || !user) {
-      return res.render('login', { title: 'Login', error: 'Wrong username! Please try again.' });
+  db.get(
+    "SELECT id, username, password_hash, COALESCE(isAdmin,0) as isAdmin FROM users WHERE username = ?",
+    [un],
+    (err, user) => {
+      if (err || !user) {
+        return res.render("login", {
+          title: "Login",
+          error: "Wrong username! Please try again.",
+        });
+      }
+      bcrypt.compare(pw, user.password_hash, (e2, ok) => {
+        if (e2 || !ok)
+          return res.render("login", {
+            title: "Login",
+            error: "Wrong password! Please try again.",
+          });
+        req.session.isLoggedIn = true;
+        req.session.un = user.username;
+        req.session.isAdmin = !!user.isAdmin;
+        return res.render("loggedin", {title: "Logged in", un: user.username});
+      });
     }
-    bcrypt.compare(pw, user.password_hash, (e2, ok) => {
-      if (e2 || !ok) return res.render('login', { title: 'Login', error: 'Wrong password! Please try again.' });
-      req.session.isLoggedIn = true;
-      req.session.un = user.username;
-      req.session.isAdmin = !!user.isAdmin;
-      return res.render('loggedin', { title: 'Logged in', un: user.username });
-    });
-  });
+  );
 });
 
 app.get("/logout", (req, res) => {
@@ -745,67 +758,91 @@ app.get("/logout", (req, res) => {
   });
 });
 
-// --- Users management (admin only) ---
+// Users management (admin only)
 // list users
-app.get('/users', requireAdmin, (req, res) => {
-  db.all('SELECT id, username, isAdmin FROM users ORDER BY id DESC', [], (err, rows) => {
-    if (err) return res.send('DB error');
-    res.render('users', { title: 'Users', users: rows });
-  });
+app.get("/users", requireAdmin, (req, res) => {
+  db.all(
+    "SELECT id, username, isAdmin FROM users ORDER BY id DESC",
+    [],
+    (err, rows) => {
+      if (err) return res.send("DB error");
+      res.render("users", {title: "Users", users: rows});
+    }
+  );
 });
 
 // new user form
-app.get('/users/new', requireAdmin, (req, res) => {
-  res.render('users', { title: 'New user', newMode: true });
+app.get("/users/new", requireAdmin, (req, res) => {
+  res.render("users", {title: "New user", newMode: true});
 });
 
 // create user (hash password)
-app.post('/users', requireAdmin, (req, res) => {
-  const { username, password, isAdmin } = req.body || {};
+app.post("/users", requireAdmin, (req, res) => {
+  const {username, password, isAdmin} = req.body || {};
   const hash = bcrypt.hashSync(password, 10);
-  db.run('INSERT INTO users (username, password_hash, isAdmin) VALUES (?, ?, ?)', [username, hash, isAdmin ? 1 : 0], (err) => {
-    if (err) return res.send('Insert user error');
-    res.redirect('/users');
-  });
+  db.run(
+    "INSERT INTO users (username, password_hash, isAdmin) VALUES (?, ?, ?)",
+    [username, hash, isAdmin ? 1 : 0],
+    (err) => {
+      if (err) return res.send("Insert user error");
+      res.redirect("/users");
+    }
+  );
 });
 
 // edit form
-app.get('/users/:id/edit', requireAdmin, (req, res) => {
-  db.get('SELECT id, username, isAdmin FROM users WHERE id = ?', [req.params.id], (err, user) => {
-    if (err || !user) return res.send('User not found');
-    res.render('users', { title: 'Edit user', user });
-  });
+app.get("/users/:id/edit", requireAdmin, (req, res) => {
+  db.get(
+    "SELECT id, username, isAdmin FROM users WHERE id = ?",
+    [req.params.id],
+    (err, user) => {
+      if (err || !user) return res.send("User not found");
+      res.render("users", {title: "Edit user", user});
+    }
+  );
 });
 
 // update user (optional password change)
-app.post('/users/:id', requireAdmin, (req, res) => {
-  const { username, password, isAdmin } = req.body || {};
+app.post("/users/:id", requireAdmin, (req, res) => {
+  const {username, password, isAdmin} = req.body || {};
   if (password) {
     const hash = bcrypt.hashSync(password, 10);
-    db.run('UPDATE users SET username = ?, password_hash = ?, isAdmin = ? WHERE id = ?', [username, hash, isAdmin ? 1 : 0, req.params.id], (err) => {
-      if (err) return res.send('Update user error');
-      res.redirect('/users');
-    });
+    db.run(
+      "UPDATE users SET username = ?, password_hash = ?, isAdmin = ? WHERE id = ?",
+      [username, hash, isAdmin ? 1 : 0, req.params.id],
+      (err) => {
+        if (err) return res.send("Update user error");
+        res.redirect("/users");
+      }
+    );
   } else {
-    db.run('UPDATE users SET username = ?, isAdmin = ? WHERE id = ?', [username, isAdmin ? 1 : 0, req.params.id], (err) => {
-      if (err) return res.send('Update user error');
-      res.redirect('/users');
-    });
+    db.run(
+      "UPDATE users SET username = ?, isAdmin = ? WHERE id = ?",
+      [username, isAdmin ? 1 : 0, req.params.id],
+      (err) => {
+        if (err) return res.send("Update user error");
+        res.redirect("/users");
+      }
+    );
   }
 });
 
 // delete user
-app.post('/users/:id/delete', requireAdmin, (req, res) => {
-  db.run('DELETE FROM users WHERE id = ?', [req.params.id], (err) => {
-    if (err) return res.send('Delete user error');
-    res.redirect('/users');
+app.post("/users/:id/delete", requireAdmin, (req, res) => {
+  db.run("DELETE FROM users WHERE id = ?", [req.params.id], (err) => {
+    if (err) return res.send("Delete user error");
+    res.redirect("/users");
   });
 });
 
 // Exhibitions page
+// Exhibitions page with dynamic pagination
 app.get("/exhibitions", (req, res) => {
-  const page = Math.max(1, parseInt(req.query.page || '1', 10));
-  const pageSize = Math.max(1, Math.min(12, parseInt(req.query.pageSize || '6', 10)));
+  const page = Math.max(1, parseInt(req.query.page || "1", 10));
+  const pageSize = Math.max(
+    1,
+    Math.min(3, parseInt(req.query.pageSize || "3", 10))
+  );
   const offset = (page - 1) * pageSize;
 
   db.get("SELECT COUNT(*) AS c FROM exhibitions", [], (err1, countRow) => {
@@ -823,21 +860,28 @@ app.get("/exhibitions", (req, res) => {
           total: totalPages,
           prev: page > 1 ? page - 1 : null,
           next: page < totalPages ? page + 1 : null,
-          pageSize
+          pageSize,
         };
-        res.render("exhibitions", { exhibitions: rows, pagination });
+        res.render("exhibitions", {exhibitions: rows, pagination});
       }
     );
   });
 });
 //Exhibition details page
-app.post("/exhibitions", upload.single('image'), (req, res) => {
+app.post("/exhibitions", upload.single("image"), (req, res) => {
   if (!req.session?.isAdmin) return res.redirect("/login");
   const {name, location, year, type, description, image_url} = req.body || {};
-  const uploaded = req.file ? ('/images/' + req.file.filename) : null;
+  const uploaded = req.file ? "/images/" + req.file.filename : null;
   db.run(
     "INSERT INTO exhibitions (id, name, location, description, year, type, image_url) VALUES ((SELECT IFNULL(MAX(id),0)+1 FROM exhibitions), ?, ?, ?, ?, ?, ?)",
-    [ name, location, description, Number(year)||null, type, uploaded || image_url || null ],
+    [
+      name,
+      location,
+      description,
+      Number(year) || null,
+      type,
+      uploaded || image_url || null,
+    ],
     (err) => {
       if (err) return res.send("Insert error");
       res.redirect("/exhibitions");
@@ -846,51 +890,83 @@ app.post("/exhibitions", upload.single('image'), (req, res) => {
 });
 
 // Artworks CRUD operations
-app.post('/exhibition/:id/artworks', upload.single('image'), requireAdmin, (req, res) => {
-  const eid = req.params.id;
-  const { title, rewords, medium, image_url } = req.body || {};
-  const uploaded = req.file ? ('/images/' + req.file.filename) : null;
-  db.run(
-    'INSERT INTO artworks (exhibition_id, title, rewords, medium, image_url) VALUES (?, ?, ?, ?, ?)',
-    [eid, title, rewords || null, medium || null, uploaded || image_url || null],
-    (err) => {
-      if (err) return res.send('Insert artwork error');
-      res.redirect('/exhibition/' + eid);
-    }
-  );
-});
+app.post(
+  "/exhibition/:id/artworks",
+  upload.single("image"),
+  requireAdmin,
+  (req, res) => {
+    const eid = req.params.id;
+    const {title, rewords, medium, image_url} = req.body || {};
+    const uploaded = req.file ? "/images/" + req.file.filename : null;
+    db.run(
+      "INSERT INTO artworks (exhibition_id, title, rewords, medium, image_url) VALUES (?, ?, ?, ?, ?)",
+      [
+        eid,
+        title,
+        rewords || null,
+        medium || null,
+        uploaded || image_url || null,
+      ],
+      (err) => {
+        if (err) return res.send("Insert artwork error");
+        res.redirect("/exhibition/" + eid);
+      }
+    );
+  }
+);
 
 // Update an artwork
-app.post('/artworks/:aid/update', upload.single('image'), requireAdmin, (req, res) => {
-  const aid = req.params.aid;
-  const { title, rewords, medium, image_url, exhibition_id } = req.body || {};
-  db.run(
-    'UPDATE artworks SET title = ?, rewords = ?, medium = ?, image_url = COALESCE(?, image_url) WHERE id = ?',
-    [title, rewords || null, medium || null, (req.file ? ('/images/' + req.file.filename) : (image_url || null)), aid],
-    (err) => {
-      if (err) return res.send('Update artwork error');
-      res.redirect('/exhibition/' + (exhibition_id || ''));
-    }
-  );
-});
+app.post(
+  "/artworks/:aid/update",
+  upload.single("image"),
+  requireAdmin,
+  (req, res) => {
+    const aid = req.params.aid;
+    const {title, rewords, medium, image_url, exhibition_id} = req.body || {};
+    db.run(
+      "UPDATE artworks SET title = ?, rewords = ?, medium = ?, image_url = COALESCE(?, image_url) WHERE id = ?",
+      [
+        title,
+        rewords || null,
+        medium || null,
+        req.file ? "/images/" + req.file.filename : image_url || null,
+        aid,
+      ],
+      (err) => {
+        if (err) return res.send("Update artwork error");
+        res.redirect("/exhibition/" + (exhibition_id || ""));
+      }
+    );
+  }
+);
 
 // Delete an artwork
-app.post('/artworks/:aid/delete', requireAdmin, (req, res) => {
+app.post("/artworks/:aid/delete", requireAdmin, (req, res) => {
   const aid = req.params.aid;
-  const { exhibition_id } = req.body || {};
-  db.run('DELETE FROM artworks WHERE id = ?', [aid], (err) => {
-    if (err) return res.send('Delete artwork error');
-    res.redirect('/exhibition/' + (exhibition_id || ''));
+  const {exhibition_id} = req.body || {};
+  db.run("DELETE FROM artworks WHERE id = ?", [aid], (err) => {
+    if (err) return res.send("Delete artwork error");
+    res.redirect("/exhibition/" + (exhibition_id || ""));
   });
 });
 
+// exhibitions CRUD operations
+
 //update
-app.post("/exhibitions/update/:id", upload.single('image'), (req, res) => {
+app.post("/exhibitions/update/:id", upload.single("image"), (req, res) => {
   if (!req.session?.isAdmin) return res.redirect("/login");
   const {name, location, year, type, description, image_url} = req.body || {};
   db.run(
     "UPDATE exhibitions SET name = ?, location = ?, year = ?, type = ?, description = ?, image_url = COALESCE(?, image_url) WHERE id = ?",
-    [ name, location, Number(year)||null, type, description, (req.file ? ('/images/' + req.file.filename) : (image_url || null)), req.params.id ],
+    [
+      name,
+      location,
+      Number(year) || null,
+      type,
+      description,
+      req.file ? "/images/" + req.file.filename : image_url || null,
+      req.params.id,
+    ],
     (err) => {
       if (err) return res.send("Update error");
       res.redirect("/exhibitions/" + req.params.id);
@@ -1033,9 +1109,9 @@ db.run(
 );
 
 // add isAdmin column if the table existed without it
-db.run('ALTER TABLE users ADD COLUMN isAdmin INTEGER DEFAULT 0', (e) => {
+db.run("ALTER TABLE users ADD COLUMN isAdmin INTEGER DEFAULT 0", (e) => {
   if (e && !/duplicate column name/i.test(e.message)) {
-    console.log('users table alter error:', e.message);
+    console.log("users table alter error:", e.message);
   }
 });
 
@@ -1044,12 +1120,15 @@ const ADMIN_HASH =
   "$2b$10$EIYwU6NE6V.0gAP8zIfVTeApl6DLjjHjN7FkIyArYqRw3N24xH41W";
 db.get("SELECT id FROM users WHERE username = ?", ["admin"], (err, row) => {
   if (!row) {
-    db.run("INSERT INTO users (username, password_hash, isAdmin) VALUES (?, ?, 1)", [
-      "admin",
-      ADMIN_HASH,
-    ]);
+    db.run(
+      "INSERT INTO users (username, password_hash, isAdmin) VALUES (?, ?, 1)",
+      ["admin", ADMIN_HASH]
+    );
   } else {
-    db.run('UPDATE users SET isAdmin = 1 WHERE username = ? AND (isAdmin IS NULL OR isAdmin = 0)', ["admin"]);
+    db.run(
+      "UPDATE users SET isAdmin = 1 WHERE username = ? AND (isAdmin IS NULL OR isAdmin = 0)",
+      ["admin"]
+    );
   }
 });
 
