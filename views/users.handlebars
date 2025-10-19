@@ -1,0 +1,44 @@
+<h1>{{#if newMode}}New user{{else}}{{#if user}}Edit user{{else}}Users{{/if}}{{/if}}</h1>
+
+{{#if newMode}}
+  <form method="POST" action="/users">
+    <label>Username <input name="username" required></label><br>
+    <label>Password <input type="password" name="password" required></label><br>
+    <label><input type="checkbox" name="isAdmin" value="1"> Admin</label><br>
+    <button type="submit">Create</button>
+    <a href="/users">Cancel</a>
+  </form>
+{{else if user}}
+  <form method="POST" action="/users/{{user.id}}">
+    <label>Username <input name="username" value="{{user.username}}" required></label><br>
+    <label>New password (optional) <input type="password" name="password"></label><br>
+    <label><input type="checkbox" name="isAdmin" value="1" {{#if user.isAdmin}}checked{{/if}}> Admin</label><br>
+    <button type="submit">Save</button>
+    <a href="/users">Cancel</a>
+  </form>
+{{else}}
+  <p><a href="/users/new">New user</a></p>
+  <table>
+    <thead>
+      <tr><th>ID</th><th>Username</th><th>Role</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+    {{#each users}}
+      <tr>
+        <td>{{id}}</td>
+        <td>{{username}}</td>
+        <td>{{#if isAdmin}}Admin{{else}}User{{/if}}</td>
+        <td>
+          <a href="/users/{{id}}/edit">Edit</a>
+          <form method="POST" action="/users/{{id}}/delete" style="display:inline">
+            <button type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+    {{/each}}
+    </tbody>
+    {{#unless users}}
+      <caption>No users yet</caption>
+    {{/unless}}
+  </table>
+{{/if}}

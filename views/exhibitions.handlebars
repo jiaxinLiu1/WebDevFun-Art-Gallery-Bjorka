@@ -14,8 +14,9 @@
   <hr />
 {{/if}}
 
-{{#each exhibitions}}
-  <div class="exhibition">
+<div class="exhibitions-grid">
+  {{#each exhibitions}}
+  <div class="exhibition card">
     <img src="{{image_url}}" alt="{{name}}" />
     <h2>{{name}}</h2>
     <p><strong>Year:</strong> {{year}}</p>
@@ -26,3 +27,16 @@
     <hr />
   </div>
 {{/each}}
+</div>
+
+{{#if pagination}}
+  <div class="pagination">
+    {{#if pagination.prev}}
+      <a href="/exhibitions?page={{pagination.prev}}&pageSize={{pagination.pageSize}}">Previous</a>
+    {{/if}}
+    <span>Page {{pagination.current}} / {{pagination.total}}</span>
+    {{#if pagination.next}}
+      <a href="/exhibitions?page={{pagination.next}}&pageSize={{pagination.pageSize}}">Next</a>
+    {{/if}}
+  </div>
+{{/if}}

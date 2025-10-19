@@ -21,6 +21,7 @@ const {engine} = require("express-handlebars");
 const sqlite3 = require("sqlite3");
 const session = require("express-session");
 const bcrypt = require("bcryptjs");
+const multer = require("multer");
 
 // VARIABLES AND CONSTANTS
 const port = 8080;
@@ -30,6 +31,17 @@ app.use(session({secret: "bjorka", resave: false, saveUninitialized: true}));
 
 const dbFile = "exhibition-data1.sqlite3.db";
 const db = new sqlite3.Database(dbFile);
+
+// Multer configuration: save uploads into public/images
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, path.join(__dirname, "public", "images")),
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname || "");
+    const name = "upload-" + Date.now() + "-" + Math.round(Math.random()*1e6) + ext;
+    cb(null, name);
+  }
+});
+const upload = multer({ storage });
 
 // DATABASE table1-exhibition
 function initTableExhibitions(mydb) {
@@ -698,47 +710,30 @@ app.get("/", (req, res) => {
   res.render("index", {title: "Björka"});
 });
 
+// admin only for data modifications
+function requireAdmin(req, res, next) {
+  if (!req.session || !req.session.isAdmin) return res.redirect('/login');
+  next();
+}
+
 // Login
 app.get("/login", (req, res) => {
   res.render("login", {title: "Login"});
 });
 app.post("/login", (req, res) => {
   const {un, pw} = req.body || {};
-  console.log(
-    `Here comes the data received from the form on the client: ${un} - ${pw} `
-  );
-  if (un === "admin") {
-    // use seeded bcrypt hash as teacher template expects
-    const adminPassword = ADMIN_HASH; // "wdf#2025" hash
-    bcrypt.compare(pw, adminPassword, (err, result) => {
-      if (err) {
-        console.log("Error in password comparison");
-        return res.render("login", {
-          title: "Login",
-          error: "Error in password comparison.",
-        });
-      }
-      if (result) {
-        req.session.isLoggedIn = true;
-        req.session.un = un;
-        req.session.isAdmin = true;
-        console.log("---> SESSION INFORMATION: ", JSON.stringify(req.session));
-        return res.render("loggedin", {title: "Logged in", un});
-      } else {
-        console.log("Wrong password");
-        return res.render("login", {
-          title: "Login",
-          error: "Wrong password! Please try again.",
-        });
-      }
+  db.get('SELECT id, username, password_hash, COALESCE(isAdmin,0) as isAdmin FROM users WHERE username = ?', [un], (err, user) => {
+    if (err || !user) {
+      return res.render('login', { title: 'Login', error: 'Wrong username! Please try again.' });
+    }
+    bcrypt.compare(pw, user.password_hash, (e2, ok) => {
+      if (e2 || !ok) return res.render('login', { title: 'Login', error: 'Wrong password! Please try again.' });
+      req.session.isLoggedIn = true;
+      req.session.un = user.username;
+      req.session.isAdmin = !!user.isAdmin;
+      return res.render('loggedin', { title: 'Logged in', un: user.username });
     });
-  } else {
-    console.log("Wrong username");
-    return res.render("login", {
-      title: "Login",
-      error: "Wrong username! Please try again.",
-    });
-  }
+  });
 });
 
 app.get("/logout", (req, res) => {
@@ -750,48 +745,152 @@ app.get("/logout", (req, res) => {
   });
 });
 
+// --- Users management (admin only) ---
+// list users
+app.get('/users', requireAdmin, (req, res) => {
+  db.all('SELECT id, username, isAdmin FROM users ORDER BY id DESC', [], (err, rows) => {
+    if (err) return res.send('DB error');
+    res.render('users', { title: 'Users', users: rows });
+  });
+});
+
+// new user form
+app.get('/users/new', requireAdmin, (req, res) => {
+  res.render('users', { title: 'New user', newMode: true });
+});
+
+// create user (hash password)
+app.post('/users', requireAdmin, (req, res) => {
+  const { username, password, isAdmin } = req.body || {};
+  const hash = bcrypt.hashSync(password, 10);
+  db.run('INSERT INTO users (username, password_hash, isAdmin) VALUES (?, ?, ?)', [username, hash, isAdmin ? 1 : 0], (err) => {
+    if (err) return res.send('Insert user error');
+    res.redirect('/users');
+  });
+});
+
+// edit form
+app.get('/users/:id/edit', requireAdmin, (req, res) => {
+  db.get('SELECT id, username, isAdmin FROM users WHERE id = ?', [req.params.id], (err, user) => {
+    if (err || !user) return res.send('User not found');
+    res.render('users', { title: 'Edit user', user });
+  });
+});
+
+// update user (optional password change)
+app.post('/users/:id', requireAdmin, (req, res) => {
+  const { username, password, isAdmin } = req.body || {};
+  if (password) {
+    const hash = bcrypt.hashSync(password, 10);
+    db.run('UPDATE users SET username = ?, password_hash = ?, isAdmin = ? WHERE id = ?', [username, hash, isAdmin ? 1 : 0, req.params.id], (err) => {
+      if (err) return res.send('Update user error');
+      res.redirect('/users');
+    });
+  } else {
+    db.run('UPDATE users SET username = ?, isAdmin = ? WHERE id = ?', [username, isAdmin ? 1 : 0, req.params.id], (err) => {
+      if (err) return res.send('Update user error');
+      res.redirect('/users');
+    });
+  }
+});
+
+// delete user
+app.post('/users/:id/delete', requireAdmin, (req, res) => {
+  db.run('DELETE FROM users WHERE id = ?', [req.params.id], (err) => {
+    if (err) return res.send('Delete user error');
+    res.redirect('/users');
+  });
+});
+
 // Exhibitions page
 app.get("/exhibitions", (req, res) => {
-  db.all("SELECT * FROM exhibitions ORDER BY id ASC", [], (err, rows) => {
-    if (err) return res.send("Database error");
-    res.render("exhibitions", {exhibitions: rows});
+  const page = Math.max(1, parseInt(req.query.page || '1', 10));
+  const pageSize = Math.max(1, Math.min(12, parseInt(req.query.pageSize || '6', 10)));
+  const offset = (page - 1) * pageSize;
+
+  db.get("SELECT COUNT(*) AS c FROM exhibitions", [], (err1, countRow) => {
+    if (err1) return res.send("Database error");
+    const total = countRow ? countRow.c : 0;
+    const totalPages = Math.max(1, Math.ceil(total / pageSize));
+
+    db.all(
+      "SELECT * FROM exhibitions ORDER BY id ASC LIMIT ? OFFSET ?",
+      [pageSize, offset],
+      (err2, rows) => {
+        if (err2) return res.send("Database error");
+        const pagination = {
+          current: page,
+          total: totalPages,
+          prev: page > 1 ? page - 1 : null,
+          next: page < totalPages ? page + 1 : null,
+          pageSize
+        };
+        res.render("exhibitions", { exhibitions: rows, pagination });
+      }
+    );
   });
 });
 //Exhibition details page
-app.post("/exhibitions", (req, res) => {
+app.post("/exhibitions", upload.single('image'), (req, res) => {
   if (!req.session?.isAdmin) return res.redirect("/login");
   const {name, location, year, type, description, image_url} = req.body || {};
+  const uploaded = req.file ? ('/images/' + req.file.filename) : null;
   db.run(
     "INSERT INTO exhibitions (id, name, location, description, year, type, image_url) VALUES ((SELECT IFNULL(MAX(id),0)+1 FROM exhibitions), ?, ?, ?, ?, ?, ?)",
-    [
-      name,
-      location,
-      description,
-      Number(year) || null,
-      type,
-      image_url || null,
-    ],
+    [ name, location, description, Number(year)||null, type, uploaded || image_url || null ],
     (err) => {
       if (err) return res.send("Insert error");
       res.redirect("/exhibitions");
     }
   );
 });
+
+// Artworks CRUD operations
+app.post('/exhibition/:id/artworks', upload.single('image'), requireAdmin, (req, res) => {
+  const eid = req.params.id;
+  const { title, rewords, medium, image_url } = req.body || {};
+  const uploaded = req.file ? ('/images/' + req.file.filename) : null;
+  db.run(
+    'INSERT INTO artworks (exhibition_id, title, rewords, medium, image_url) VALUES (?, ?, ?, ?, ?)',
+    [eid, title, rewords || null, medium || null, uploaded || image_url || null],
+    (err) => {
+      if (err) return res.send('Insert artwork error');
+      res.redirect('/exhibition/' + eid);
+    }
+  );
+});
+
+// Update an artwork
+app.post('/artworks/:aid/update', upload.single('image'), requireAdmin, (req, res) => {
+  const aid = req.params.aid;
+  const { title, rewords, medium, image_url, exhibition_id } = req.body || {};
+  db.run(
+    'UPDATE artworks SET title = ?, rewords = ?, medium = ?, image_url = COALESCE(?, image_url) WHERE id = ?',
+    [title, rewords || null, medium || null, (req.file ? ('/images/' + req.file.filename) : (image_url || null)), aid],
+    (err) => {
+      if (err) return res.send('Update artwork error');
+      res.redirect('/exhibition/' + (exhibition_id || ''));
+    }
+  );
+});
+
+// Delete an artwork
+app.post('/artworks/:aid/delete', requireAdmin, (req, res) => {
+  const aid = req.params.aid;
+  const { exhibition_id } = req.body || {};
+  db.run('DELETE FROM artworks WHERE id = ?', [aid], (err) => {
+    if (err) return res.send('Delete artwork error');
+    res.redirect('/exhibition/' + (exhibition_id || ''));
+  });
+});
+
 //update
-app.post("/exhibitions/update/:id", (req, res) => {
+app.post("/exhibitions/update/:id", upload.single('image'), (req, res) => {
   if (!req.session?.isAdmin) return res.redirect("/login");
   const {name, location, year, type, description, image_url} = req.body || {};
   db.run(
-    "UPDATE exhibitions SET name = ?, location = ?, year = ?, type = ?, description = ?, image_url = ? WHERE id = ?",
-    [
-      name,
-      location,
-      Number(year) || null,
-      type,
-      description,
-      image_url || null,
-      req.params.id,
-    ],
+    "UPDATE exhibitions SET name = ?, location = ?, year = ?, type = ?, description = ?, image_url = COALESCE(?, image_url) WHERE id = ?",
+    [ name, location, Number(year)||null, type, description, (req.file ? ('/images/' + req.file.filename) : (image_url || null)), req.params.id ],
     (err) => {
       if (err) return res.send("Update error");
       res.redirect("/exhibitions/" + req.params.id);
@@ -928,19 +1027,30 @@ db.run(
   `CREATE TABLE IF NOT EXISTS users (
      id INTEGER PRIMARY KEY AUTOINCREMENT,
      username TEXT UNIQUE NOT NULL,
-     password_hash TEXT NOT NULL
+     password_hash TEXT NOT NULL,
+     isAdmin INTEGER DEFAULT 0
   )`
 );
+
+// add isAdmin column if the table existed without it
+db.run('ALTER TABLE users ADD COLUMN isAdmin INTEGER DEFAULT 0', (e) => {
+  if (e && !/duplicate column name/i.test(e.message)) {
+    console.log('users table alter error:', e.message);
+  }
+});
 
 // Where credentials are embedded: the line below stores the bcrypt hash for "wdf#2025"
 const ADMIN_HASH =
   "$2b$10$EIYwU6NE6V.0gAP8zIfVTeApl6DLjjHjN7FkIyArYqRw3N24xH41W";
 db.get("SELECT id FROM users WHERE username = ?", ["admin"], (err, row) => {
-  if (!row)
-    db.run("INSERT INTO users (username, password_hash) VALUES (?, ?)", [
+  if (!row) {
+    db.run("INSERT INTO users (username, password_hash, isAdmin) VALUES (?, ?, 1)", [
       "admin",
       ADMIN_HASH,
     ]);
+  } else {
+    db.run('UPDATE users SET isAdmin = 1 WHERE username = ? AND (isAdmin IS NULL OR isAdmin = 0)', ["admin"]);
+  }
 });
 
 // LISTEN TO INCOMING REQUESTS

@@ -11,6 +11,9 @@
       <a href="/exhibitions">Exhibitions</a>
       <a href="/about">About</a>
       <a href="/contact">Contact</a>
+      {{#if session.isAdmin}}
+        <a href="/users">Users</a>
+      {{/if}}
       <span class="spacer"></span>
       {{#if session.isLoggedIn}}
         Hej,

@@ -3,12 +3,12 @@
 <p><strong>Location:</strong> {{exhibition.location}}</p>
 <p><strong>Type:</strong> {{exhibition.type}}</p>
 <p>{{exhibition.description}}</p>
-<img src="{{exhibition.image_url}}" alt="{{exhibition.name}}" />
+<img class="detail-img" src="{{exhibition.image_url}}" alt="{{exhibition.name}}" />
 
 <hr />
 
 {{#if session.isAdmin}}
-  <form method="POST" action="/exhibitions/update/{{exhibition.id}}">
+  <form method="POST" action="/exhibitions/update/{{exhibition.id}}" enctype="multipart/form-data">
     <label>Name
       <input name="name" value="{{exhibition.name}}" required />
     </label><br />
@@ -26,6 +26,9 @@
     </label><br />
     <label>Image URL
       <input name="image_url" value="{{exhibition.image_url}}" />
+       </label>
+    <label> or Upload
+      <input type="file" name="image" />
     </label><br />
     <button type="submit">Update</button>
   </form>
@@ -53,12 +56,38 @@
 {{/unless}}
 
 <h2>Artworks in this Exhibition</h2>
+{{#if session.isAdmin}}
+  <h3>Add artwork</h3>
+  <form method="POST" action="/exhibition/{{exhibition.id}}/artworks" enctype="multipart/form-data">
+    <label>Title <input name="title" required /></label><br />
+    <label>Medium <input name="medium" /></label><br />
+    <label>Rewords <input name="rewords" /></label><br />
+    <label>Image URL <input name="image_url" placeholder="/images/... or https://..." /></label>
+    <label> or Upload <input type="file" name="image" /></label><br />
+    <button type="submit">Create</button>
+  </form>
+{{/if}}
 <ul>
   {{#each artworks}}
     <li>
       <h3>{{title}}</h3>
       <p><strong>Medium:</strong> {{medium}}</p>
       <p>{{rewords}}</p>
+      {{#if ../session.isAdmin}}
+        <form method="POST" action="/artworks/{{id}}/update" enctype="multipart/form-data">
+          <input type="hidden" name="exhibition_id" value="{{../exhibition.id}}" />
+          <label>Title <input name="title" value="{{title}}" required /></label>
+          <label>Medium <input name="medium" value="{{medium}}" /></label>
+          <label>Rewords <input name="rewords" value="{{rewords}}" /></label>
+          <label>Image URL <input name="image_url" value="{{image_url}}" /></label>
+          <label> or Upload <input type="file" name="image" /></label>
+          <button type="submit">Update</button>
+        </form>
+        <form method="POST" action="/artworks/{{id}}/delete" style="margin-top:6px">
+          <input type="hidden" name="exhibition_id" value="{{../exhibition.id}}" />
+          <button type="submit">Delete</button>
+        </form>
+      {{/if}}
     </li>
   {{/each}}
 </ul>
