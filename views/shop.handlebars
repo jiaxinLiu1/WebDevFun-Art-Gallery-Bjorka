@@ -1,0 +1,14 @@
+<h1 class="shop-title">Our shop items</h1>
+
+<div class="shop-grid">
+  {{#each items}}
+    <div class="shop card">
+      <img src="{{image_url}}" alt="{{name}}" />
+      <h2>{{name}}</h2>
+      <p><strong>Price:</strong> ${{price}}</p>
+      <p><strong>Category:</strong> {{category}}</p>
+      <a href="/shop/{{id}}">View Details</a>
+
+    </div>
+  {{/each}}
+</div>

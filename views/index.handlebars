@@ -55,27 +55,4 @@
       </div>
     </div>
   </section>
-
-  <section id="shop" class="section">
-    <div class="container">
-      <div class="section-head">
-        <h2>Shop Items</h2>
-      </div>
-      <div class="shop-grid" aria-label="Shop item grid">
-        {{#each items}}
-          <figure class="tile">
-            <a href="/shop/{{this.id}}">
-              <img src="{{this.image_url}}" alt="{{this.name}}" />
-            </a>
-            <figcaption>
-              <strong>{{this.name}}</strong><br />
-              ${{this.price}}
-              -
-              {{this.category}}
-            </figcaption>
-          </figure>
-        {{/each}}
-      </div>
-    </div>
-  </section>
 </main>

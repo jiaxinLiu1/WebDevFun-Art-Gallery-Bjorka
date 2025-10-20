@@ -816,68 +816,80 @@ function initTableUserReviews(mydb) {
     {
       shop_item_id: 1,
       username: "Emma",
+      score: "78",
       comment: "Beautiful poster with vibrant colors!",
     },
     {
       shop_item_id: 2,
       username: "Lucas",
+      score: "82",
       comment: "The marble detail is stunning, worth the price.",
     },
     {
       shop_item_id: 3,
       username: "Mia",
+      score: "87",
       comment: "Great quality print, looks amazing on my wall.",
     },
     {
       shop_item_id: 4,
       username: "Noah",
+      score: "90",
       comment: "Tote bag is durable and stylish.",
     },
     {
       shop_item_id: 5,
       username: "Sophia",
+      score: "91",
       comment: "Notebook paper quality is smooth and nice.",
     },
     {
       shop_item_id: 6,
       username: "Oliver",
+      score: "83",
       comment: "Keychain is cute but a bit small.",
     },
     {
       shop_item_id: 7,
       username: "Isabella",
+      score: "84",
       comment: "Mug design is minimal and elegant.",
     },
 
     {
       shop_item_id: 8,
       username: "Ethan",
+      score: "88",
       comment: "Love the calendar artwork!",
     },
     {
       shop_item_id: 9,
       username: "Ava",
+      score: "93",
       comment: "T-shirt fabric feels soft and premium.",
     },
     {
       shop_item_id: 10,
       username: "Liam",
+      score: "92",
       comment: "The cushion brightens my room!",
     },
     {
       shop_item_id: 11,
       username: "Amelia",
+      score: "89",
       comment: "Perfect tote for everyday use!",
     },
   ];
-  //create table-5(user reviews) and insert data at startup
 
-  mydb.run(
+  //create table-5(user reviews) and insert data at startup
+  db.run(
     `
 CREATE TABLE IF NOT EXISTS user_reviews (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   shop_item_id INTEGER NOT NULL,
   username TEXT NOT NULL,
+  score TEXT NOT NULL,
   comment TEXT NOT NULL
 )
 `,
@@ -896,8 +908,13 @@ CREATE TABLE IF NOT EXISTS user_reviews (
           // insert new data
           userReviews.forEach((review) => {
             mydb.run(
-              "INSERT INTO user_reviews (shop_item_id, username, comment) VALUES (?, ?, ?)",
-              [review.shop_item_id, review.username, review.comment],
+              "INSERT INTO user_reviews (shop_item_id, username, score, comment) VALUES (?, ?, ?, ?)",
+              [
+                review.shop_item_id,
+                review.username,
+                review.score,
+                review.comment,
+              ],
               (err) => {
                 if (err) {
                   console.log("Error inserting review:", err);
@@ -1064,29 +1081,28 @@ app.post("/users/:id/delete", requireAdmin, (req, res) => {
 
 //home page
 
-app.get("/", (req, res) => {
-  mydb.all("SELECT * FROM shop_items", (err, items) => {
+app.get("/shop", (req, res) => {
+  db.all("SELECT * FROM shop_items", (err, items) => {
     if (err) return res.send(err.message);
-    res.render("index", {items});
+    res.render("shop", {items});
   });
 });
 app.get("/shop/:id", (req, res) => {
   const itemId = req.params.id;
-
   const itemQuery = "SELECT * FROM shop_items WHERE id = ?";
-  mydb.get(itemQuery, [itemId], (err, item) => {
+  db.get(itemQuery, [itemId], (err, item) => {
     if (err) return res.send(err.message);
 
     if (!item) return res.send("Item not found");
 
     // INNER JOIN get reviews
     const reviewQuery = `
-      SELECT user_reviews.username, user_reviews.comment
+      SELECT user_reviews.username, user_reviews.score, user_reviews.comment
       FROM user_reviews
       INNER JOIN shop_items ON user_reviews.shop_item_id = shop_items.id
       WHERE shop_items.id = ?
     `;
-    mydb.all(reviewQuery, [itemId], (err, reviews) => {
+    db.all(reviewQuery, [itemId], (err, reviews) => {
       if (err) return res.send(err.message);
 
       res.render("shopdetail", {item, reviews});

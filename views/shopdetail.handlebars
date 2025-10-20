@@ -1,28 +1,29 @@
-<section id="shop-detail" class="section">
-  <div class="container">
-    <div class="product-detail">
-      <img src="{{item.image_url}}" alt="{{item.name}}" />
-      <div class="product-info">
-        <h2>{{item.name}}</h2>
-        <p>Category: {{item.category}}</p>
-        <p>Price: ${{item.price}}</p>
-      </div>
-    </div>
+<h1 class="shop-title">Our shop items</h1>
 
-    <div class="reviews">
-      <h3>User Reviews</h3>
-      {{#if reviews.length}}
-        <ul>
-          {{#each reviews}}
-            <li>
-              <strong>{{this.username}}:</strong>
-              {{this.comment}}
-            </li>
-          {{/each}}
-        </ul>
-      {{else}}
-        <p>No reviews</p>
-      {{/if}}
-    </div>
+<div class="item-detail">
+  <img src="{{item.image_url}}" alt="{{item.name}}" />
+  <div class="item-info">
+    <h2>{{item.name}}</h2>
+    <p><strong>Price:</strong> ${{item.price}}</p>
+    <p><strong>Category:</strong> {{item.category}}</p>
   </div>
-</section>
+</div>
+
+<h2 class="shop-title2">User Reviews</h2>
+{{#if reviews.length}}
+  <div class="shop-grid2">
+    {{#each reviews}}
+      <div class="shop card2">
+        <strong>{{username}}</strong><br />
+        Rating:
+        {{score}}<br />
+        {{comment}}
+      </div>
+    {{/each}}
+  </div>
+{{else}}
+  <p>No reviews yet.</p>
+{{/if}}
+<div class="back-button">
+  <p><a href="/shop">Back to shop list</a></p>
+</div>

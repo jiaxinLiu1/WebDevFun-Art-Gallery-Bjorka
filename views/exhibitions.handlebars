@@ -1,4 +1,4 @@
-<h1>Our exhibitions</h1>
+<h1 class="shop-title">Our exhibitions</h1>
 
 {{#if session.isAdmin}}
   <h3>New exhibition</h3>
@@ -16,27 +16,31 @@
 
 <div class="exhibitions-grid">
   {{#each exhibitions}}
-  <div class="exhibition card">
-    <img src="{{image_url}}" alt="{{name}}" />
-    <h2>{{name}}</h2>
-    <p><strong>Year:</strong> {{year}}</p>
-    <p><strong>Location:</strong> {{location}}</p>
-    <p><strong>Type:</strong> {{type}}</p>
-    <p><strong>Description:</strong> {{description}}</p>
-    <a href="/exhibitions/{{id}}">View Details</a>
-    <hr />
-  </div>
-{{/each}}
+    <div class="exhibition card">
+      <img src="{{image_url}}" alt="{{name}}" />
+      <h2>{{name}}</h2>
+      <p><strong>Year:</strong> {{year}}</p>
+      <p><strong>Location:</strong> {{location}}</p>
+      <p><strong>Type:</strong> {{type}}</p>
+      <p><strong>Description:</strong> {{description}}</p>
+      <a href="/exhibitions/{{id}}">View Details</a>
+
+    </div>
+  {{/each}}
 </div>
 
 {{#if pagination}}
   <div class="pagination">
     {{#if pagination.prev}}
-      <a href="/exhibitions?page={{pagination.prev}}&pageSize={{pagination.pageSize}}">Previous</a>
+      <a
+        href="/exhibitions?page={{pagination.prev}}&pageSize={{pagination.pageSize}}"
+      >Previous</a>
     {{/if}}
     <span>Page {{pagination.current}} / {{pagination.total}}</span>
     {{#if pagination.next}}
-      <a href="/exhibitions?page={{pagination.next}}&pageSize={{pagination.pageSize}}">Next</a>
+      <a
+        href="/exhibitions?page={{pagination.next}}&pageSize={{pagination.pageSize}}"
+      >Next</a>
     {{/if}}
   </div>
 {{/if}}
