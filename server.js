@@ -106,7 +106,7 @@ function initTableExhibitions(mydb) {
         "Industrial sculptures shaped like organic plants, symbolizing coexistence of nature and steel.",
       year: 2022,
       type: "Installation",
-      image: "/images/interior.jpg",
+      image: "/images/exhibition6.jpg",
     },
     {
       id: 7,
@@ -116,7 +116,7 @@ function initTableExhibitions(mydb) {
         "A fusion of photography and painting capturing Scandinavian wilderness.",
       year: 2017,
       type: "Mixed Media",
-      image: "/images/interior.jpg",
+      image: "/images/exhibition7.jpg",
     },
     {
       id: 8,
@@ -126,7 +126,7 @@ function initTableExhibitions(mydb) {
         "Cross-cultural art dialogue merging Chinese ink and Western oil techniques.",
       year: 2019,
       type: "Painting",
-      image: "/images/interior.jpg",
+      image: "/images/exhibition8.jpg",
     },
     {
       id: 9,
@@ -136,7 +136,7 @@ function initTableExhibitions(mydb) {
         "Tracing the development of abstract expressionism through the 20th century.",
       year: 2018,
       type: "Painting",
-      image: "/images/interior.jpg",
+      image: "/images/exhibition9.jpg",
     },
     {
       id: 10,
@@ -146,7 +146,7 @@ function initTableExhibitions(mydb) {
         "A vibrant exhibition celebrating African identity through color and rhythm.",
       year: 2012,
       type: "Contemporary Art",
-      image: "/images/interior.jpg",
+      image: "/images/exhibition10.jpg",
     },
   ];
 
@@ -214,7 +214,7 @@ function initTableArtists(mydb) {
       nationality: "France",
       age: 34,
       famous_work: "Light Shadows",
-      image_url: "/images/artists/alice.jpg",
+      image_url: "/images/artist1.jpg",
     },
     {
       exhibition_id: 1,
@@ -222,7 +222,7 @@ function initTableArtists(mydb) {
       nationality: "France",
       age: 41,
       famous_work: "Dark Lines",
-      image_url: "/images/artists/jean.jpg",
+      image_url: "/images/artist2.jpg",
     },
     {
       exhibition_id: 1,
@@ -230,7 +230,7 @@ function initTableArtists(mydb) {
       nationality: "France",
       age: 29,
       famous_work: "Shadow Play",
-      image_url: "/images/artists/camille.jpg",
+      image_url: "/images/artist3.jpg",
     },
     {
       exhibition_id: 2,
@@ -238,7 +238,7 @@ function initTableArtists(mydb) {
       nationality: "Italy",
       age: 39,
       famous_work: "Echoes Sculpture",
-      image_url: "/images/artists/luca.jpg",
+      image_url: "/images/artist4.jpg",
     },
     {
       exhibition_id: 2,
@@ -246,7 +246,7 @@ function initTableArtists(mydb) {
       nationality: "Italy",
       age: 32,
       famous_work: "Marble Whispers",
-      image_url: "/images/artists/maria.jpg",
+      image_url: "/images/artist5.jpg",
     },
     {
       exhibition_id: 2,
@@ -254,7 +254,7 @@ function initTableArtists(mydb) {
       nationality: "Italy",
       age: 45,
       famous_work: "Stone Flow",
-      image_url: "/images/artists/giovanni.jpg",
+      image_url: "/images/artist6.jpg",
     },
     {
       exhibition_id: 3,
@@ -262,7 +262,7 @@ function initTableArtists(mydb) {
       nationality: "Germany",
       age: 45,
       famous_work: "Chromatic Dreams Series",
-      image_url: "/images/artists/klaus.jpg",
+      image_url: "/images/artist7.jpg",
     },
     {
       exhibition_id: 3,
@@ -270,7 +270,7 @@ function initTableArtists(mydb) {
       nationality: "Germany",
       age: 28,
       famous_work: "Color Emotion",
-      image_url: "/images/artists/sophie.jpg",
+      image_url: "/images/artist8.jpg",
     },
     {
       exhibition_id: 3,
