@@ -54,7 +54,7 @@ function initTableExhibitions(mydb) {
       location: "Paris, France",
       description:
         "A journey through the interplay of light and darkness in contemporary photography.",
-      year: 1998,
+      year: 2023,
       type: "Photography",
       image: "/images/exhibition.jpg",
     },
@@ -84,7 +84,7 @@ function initTableExhibitions(mydb) {
       location: "Tokyo, Japan",
       description:
         "AI-generated oceanic landscapes exploring the intersection of technology and art.",
-      year: 1994,
+      year: 2021,
       type: "Digital Art",
       image: "/images/exhibition4.jpg",
     },
@@ -134,7 +134,7 @@ function initTableExhibitions(mydb) {
       location: "New York, USA",
       description:
         "Tracing the development of abstract expressionism through the 20th century.",
-      year: 1955,
+      year: 2018,
       type: "Painting",
       image: "/images/interior.jpg",
     },
@@ -686,6 +686,233 @@ CREATE TABLE IF NOT EXISTS artworks (
   );
 }
 
+// DATABASE table4-shop items
+function initTableShopItems(mydb) {
+  const shopItems = [
+    {
+      id: 1,
+      name: "Art Poster - Light and Shadow",
+      price: 120,
+      category: "Poster",
+      image_url: "/images/shop/poster1.jpg",
+    },
+    {
+      id: 2,
+      name: "Marble Sculpture Miniature",
+      price: 450,
+      category: "Sculpture",
+      image_url: "/images/shop/sculpture1.jpg",
+    },
+    {
+      id: 3,
+      name: "Abstract Painting Print",
+      price: 300,
+      category: "Print",
+      image_url: "/images/shop/painting1.jpg",
+    },
+    {
+      id: 4,
+      name: "Digital Art Tote Bag",
+      price: 150,
+      category: "Merchandise",
+      image_url: "/images/shop/totebag.jpg",
+    },
+    {
+      id: 5,
+      name: "Graphic Design Notebook",
+      price: 80,
+      category: "Stationery",
+      image_url: "/images/shop/notebook.jpg",
+    },
+    {
+      id: 6,
+      name: "Steel Garden Keychain",
+      price: 60,
+      category: "Accessory",
+      image_url: "/images/shop/keychain.jpg",
+    },
+    {
+      id: 7,
+      name: "Nordic Nature Mug",
+      price: 100,
+      category: "Home",
+      image_url: "/images/shop/mug.jpg",
+    },
+    {
+      id: 8,
+      name: "East Meets West Calendar",
+      price: 90,
+      category: "Stationery",
+      image_url: "/images/shop/calendar.jpg",
+    },
+    {
+      id: 9,
+      name: "Abstract Evolution T-shirt",
+      price: 180,
+      category: "Clothing",
+      image_url: "/images/shop/tshirt.jpg",
+    },
+    {
+      id: 10,
+      name: "Colors of Africa Cushion",
+      price: 200,
+      category: "Home",
+      image_url: "/images/shop/cushion.jpg",
+    },
+    {
+      id: 11,
+      name: "Museum Eco Tote",
+      price: 130,
+      category: "Merchandise",
+      image_url: "/images/shop/ecotote.jpg",
+    },
+  ];
+  //create table-4(shop ietms) and insert data at startup
+
+  mydb.run(
+    `
+CREATE TABLE IF NOT EXISTS shop_items (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  price INTEGER NOT NULL,
+  category TEXT NOT NULL,
+  image_url TEXT
+)`,
+    (error) => {
+      if (error) {
+        console.log("Error creating table shop_items:", error);
+      } else {
+        console.log("Table shop_items created successfully!");
+        // remove old data
+        mydb.run("DELETE FROM shop_items", [], (err) => {
+          if (err) {
+            console.log("Error clearing table:", err);
+            return;
+          }
+          console.log("Old shop_items deleted");
+          // insert new data
+          shopItems.forEach((item) => {
+            mydb.run(
+              "INSERT INTO shop_items (id, name, price, category, image_url) VALUES (?, ?, ?, ?, ?)",
+              [item.id, item.name, item.price, item.category, item.image_url],
+              (err) => {
+                if (err) {
+                  console.log("Error inserting shop item:", err);
+                } else {
+                  console.log("Added shop item:", item.name);
+                }
+              }
+            );
+          });
+        });
+      }
+    }
+  );
+}
+
+// DATABASE table5-user reviews
+function initTableUserReviews(mydb) {
+  const userReviews = [
+    {
+      shop_item_id: 1,
+      username: "Emma",
+      comment: "Beautiful poster with vibrant colors!",
+    },
+    {
+      shop_item_id: 2,
+      username: "Lucas",
+      comment: "The marble detail is stunning, worth the price.",
+    },
+    {
+      shop_item_id: 3,
+      username: "Mia",
+      comment: "Great quality print, looks amazing on my wall.",
+    },
+    {
+      shop_item_id: 4,
+      username: "Noah",
+      comment: "Tote bag is durable and stylish.",
+    },
+    {
+      shop_item_id: 5,
+      username: "Sophia",
+      comment: "Notebook paper quality is smooth and nice.",
+    },
+    {
+      shop_item_id: 6,
+      username: "Oliver",
+      comment: "Keychain is cute but a bit small.",
+    },
+    {
+      shop_item_id: 7,
+      username: "Isabella",
+      comment: "Mug design is minimal and elegant.",
+    },
+
+    {
+      shop_item_id: 8,
+      username: "Ethan",
+      comment: "Love the calendar artwork!",
+    },
+    {
+      shop_item_id: 9,
+      username: "Ava",
+      comment: "T-shirt fabric feels soft and premium.",
+    },
+    {
+      shop_item_id: 10,
+      username: "Liam",
+      comment: "The cushion brightens my room!",
+    },
+    {
+      shop_item_id: 11,
+      username: "Amelia",
+      comment: "Perfect tote for everyday use!",
+    },
+  ];
+  //create table-5(user reviews) and insert data at startup
+
+  mydb.run(
+    `
+CREATE TABLE IF NOT EXISTS user_reviews (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  shop_item_id INTEGER NOT NULL,
+  username TEXT NOT NULL,
+  comment TEXT NOT NULL
+)
+`,
+    (error) => {
+      if (error) {
+        console.log("Error creating table user_reviews:", error);
+      } else {
+        console.log("Table user_reviews created successfully!");
+        // remove old data
+        mydb.run("DELETE FROM user_reviews", [], (err) => {
+          if (err) {
+            console.log("Error clearing table:", err);
+            return;
+          }
+          console.log("Old user_reviews deleted");
+          // insert new data
+          userReviews.forEach((review) => {
+            mydb.run(
+              "INSERT INTO user_reviews (shop_item_id, username, comment) VALUES (?, ?, ?)",
+              [review.shop_item_id, review.username, review.comment],
+              (err) => {
+                if (err) {
+                  console.log("Error inserting review:", err);
+                } else {
+                  console.log("Added review by:", review.username);
+                }
+              }
+            );
+          });
+        });
+      }
+    }
+  );
+}
+
 //middleware
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(__dirname));
@@ -835,6 +1062,38 @@ app.post("/users/:id/delete", requireAdmin, (req, res) => {
   });
 });
 
+//home page
+
+app.get("/", (req, res) => {
+  mydb.all("SELECT * FROM shop_items", (err, items) => {
+    if (err) return res.send(err.message);
+    res.render("index", {items});
+  });
+});
+app.get("/shop/:id", (req, res) => {
+  const itemId = req.params.id;
+
+  const itemQuery = "SELECT * FROM shop_items WHERE id = ?";
+  mydb.get(itemQuery, [itemId], (err, item) => {
+    if (err) return res.send(err.message);
+
+    if (!item) return res.send("Item not found");
+
+    // INNER JOIN get reviews
+    const reviewQuery = `
+      SELECT user_reviews.username, user_reviews.comment
+      FROM user_reviews
+      INNER JOIN shop_items ON user_reviews.shop_item_id = shop_items.id
+      WHERE shop_items.id = ?
+    `;
+    mydb.all(reviewQuery, [itemId], (err, reviews) => {
+      if (err) return res.send(err.message);
+
+      res.render("shopdetail", {item, reviews});
+    });
+  });
+});
+
 // Exhibitions page
 // Exhibitions page with dynamic pagination
 app.get("/exhibitions", (req, res) => {
@@ -868,6 +1127,7 @@ app.get("/exhibitions", (req, res) => {
   });
 });
 //Exhibition details page
+// exhibitions CRUD operations
 app.post("/exhibitions", upload.single("image"), (req, res) => {
   if (!req.session?.isAdmin) return res.redirect("/login");
   const {name, location, year, type, description, image_url} = req.body || {};
@@ -887,6 +1147,36 @@ app.post("/exhibitions", upload.single("image"), (req, res) => {
       res.redirect("/exhibitions");
     }
   );
+});
+
+//update an exhibition
+app.post("/exhibitions/update/:id", upload.single("image"), (req, res) => {
+  if (!req.session?.isAdmin) return res.redirect("/login");
+  const {name, location, year, type, description, image_url} = req.body || {};
+  db.run(
+    "UPDATE exhibitions SET name = ?, location = ?, year = ?, type = ?, description = ?, image_url = COALESCE(?, image_url) WHERE id = ?",
+    [
+      name,
+      location,
+      Number(year) || null,
+      type,
+      description,
+      req.file ? "/images/" + req.file.filename : image_url || null,
+      req.params.id,
+    ],
+    (err) => {
+      if (err) return res.send("Update error");
+      res.redirect("/exhibitions/" + req.params.id);
+    }
+  );
+});
+//delete an exhibition
+app.post("/exhibitions/delete/:id", (req, res) => {
+  if (!req.session?.isAdmin) return res.redirect("/login");
+  db.run("DELETE FROM exhibitions WHERE id = ?", [req.params.id], (err) => {
+    if (err) return res.send("Delete error");
+    res.redirect("/exhibitions");
+  });
 });
 
 // Artworks CRUD operations
@@ -947,38 +1237,6 @@ app.post("/artworks/:aid/delete", requireAdmin, (req, res) => {
   db.run("DELETE FROM artworks WHERE id = ?", [aid], (err) => {
     if (err) return res.send("Delete artwork error");
     res.redirect("/exhibition/" + (exhibition_id || ""));
-  });
-});
-
-// exhibitions CRUD operations
-
-//update
-app.post("/exhibitions/update/:id", upload.single("image"), (req, res) => {
-  if (!req.session?.isAdmin) return res.redirect("/login");
-  const {name, location, year, type, description, image_url} = req.body || {};
-  db.run(
-    "UPDATE exhibitions SET name = ?, location = ?, year = ?, type = ?, description = ?, image_url = COALESCE(?, image_url) WHERE id = ?",
-    [
-      name,
-      location,
-      Number(year) || null,
-      type,
-      description,
-      req.file ? "/images/" + req.file.filename : image_url || null,
-      req.params.id,
-    ],
-    (err) => {
-      if (err) return res.send("Update error");
-      res.redirect("/exhibitions/" + req.params.id);
-    }
-  );
-});
-//delete
-app.post("/exhibitions/delete/:id", (req, res) => {
-  if (!req.session?.isAdmin) return res.redirect("/login");
-  db.run("DELETE FROM exhibitions WHERE id = ?", [req.params.id], (err) => {
-    if (err) return res.send("Delete error");
-    res.redirect("/exhibitions");
   });
 });
 
@@ -1137,5 +1395,7 @@ app.listen(port, function () {
   initTableExhibitions(db);
   initTableArtists(db);
   initTableArtworks(db);
+  initTableShopItems(db);
+  initTableUserReviews(db);
   console.log("Server is listening on port " + port + "...");
 });

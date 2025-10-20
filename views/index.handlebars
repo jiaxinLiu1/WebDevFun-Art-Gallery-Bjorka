@@ -1,47 +1,81 @@
 <main>
-    <section id="home" class="hero-video">
-        <video class="hero-video-el" src="/public/images/video.mp4" autoplay muted loop playsinline></video>
-        <img id="logo" class="hero-logo" src="/public/images/Björkalogo.png" alt="Logo">
-    </section>
+  <section id="home" class="hero-video">
+    <video
+      class="hero-video-el"
+      src="/public/images/video.mp4"
+      autoplay
+      muted
+      loop
+      playsinline
+    ></video>
+    <img
+      id="logo"
+      class="hero-logo"
+      src="/public/images/Björkalogo.png"
+      alt="Logo"
+    />
+  </section>
 
-    <section id="recent" class="section">
-        <div class="container">
-            <div class="section-head">
-                <h2>Exhibitions</h2>
-            </div>
-            <div class="gallery" aria-label="Exhibition image grid">
-                <figure class="tile">
-                    <a href="#" target="_blank" rel="noopener noreferrer">
-                    <img src="/public/images/exhibition.jpg" alt="Exhibition 1">
-                    </a>
-                    <figcaption>Light and Shadow</figcaption>
-                </figure>
-                <figure class="tile">
-                    <a href="#" target="_blank" rel="noopener noreferrer">
-                    <img src="/public/images/exhibition2.jpg" alt="Exhibition 2">
-                    </a>
-                    <figcaption>Echoes in Marble</figcaption>
-                </figure>
-                <figure class="tile">
-                    <a href="#" target="_blank" rel="noopener noreferrer">
-                    <img src="/public/images/exhibition3.jpg" alt="Exhibition 3">
-                    </a>
-                    <figcaption>Chromatic Dreams</figcaption>
-                </figure>
-                <figure class="tile">
-                    <img src="/public/images/exhibition4.jpg" alt="Exhibition 4">
-                    <figcaption>Generative Seas</figcaption>
-                </figure>
-                <figure class="tile">
-                    <img src="/public/images/exhibition5.jpg" alt="Exhibition 5">
-                    <figcaption>Northern Lines</figcaption>
-                </figure>
-                <figure class="tile">
-                    <img src="/public/images/interior.jpg" alt="Museum interior">
-                    <figcaption>Steel Garden</figcaption>
-                </figure>
-            </div>
-        </div>
-    </section>
+  <section id="recent" class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>Exhibitions</h2>
+      </div>
+      <div class="gallery" aria-label="Exhibition image grid">
+        <figure class="tile">
+          <a href="#" target="_blank" rel="noopener noreferrer">
+            <img src="/public/images/exhibition.jpg" alt="Exhibition 1" />
+          </a>
+          <figcaption>Light and Shadow</figcaption>
+        </figure>
+        <figure class="tile">
+          <a href="#" target="_blank" rel="noopener noreferrer">
+            <img src="/public/images/exhibition2.jpg" alt="Exhibition 2" />
+          </a>
+          <figcaption>Echoes in Marble</figcaption>
+        </figure>
+        <figure class="tile">
+          <a href="#" target="_blank" rel="noopener noreferrer">
+            <img src="/public/images/exhibition3.jpg" alt="Exhibition 3" />
+          </a>
+          <figcaption>Chromatic Dreams</figcaption>
+        </figure>
+        <figure class="tile">
+          <img src="/public/images/exhibition4.jpg" alt="Exhibition 4" />
+          <figcaption>Generative Seas</figcaption>
+        </figure>
+        <figure class="tile">
+          <img src="/public/images/exhibition5.jpg" alt="Exhibition 5" />
+          <figcaption>Northern Lines</figcaption>
+        </figure>
+        <figure class="tile">
+          <img src="/public/images/interior.jpg" alt="Museum interior" />
+          <figcaption>Steel Garden</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="shop" class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>Shop Items</h2>
+      </div>
+      <div class="shop-grid" aria-label="Shop item grid">
+        {{#each items}}
+          <figure class="tile">
+            <a href="/shop/{{this.id}}">
+              <img src="{{this.image_url}}" alt="{{this.name}}" />
+            </a>
+            <figcaption>
+              <strong>{{this.name}}</strong><br />
+              ${{this.price}}
+              -
+              {{this.category}}
+            </figcaption>
+          </figure>
+        {{/each}}
+      </div>
+    </div>
+  </section>
 </main>
-
