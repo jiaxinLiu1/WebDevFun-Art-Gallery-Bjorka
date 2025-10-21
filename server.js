@@ -278,7 +278,7 @@ function initTableArtists(mydb) {
       nationality: "Germany",
       age: 38,
       famous_work: "Abstract Emotion",
-      image_url: "/images/artists/maximilian.jpg",
+      image_url: "/images/artist3.jpg",
     },
     {
       exhibition_id: 4,
