@@ -1305,6 +1305,8 @@ app.post("/exhibitions", upload.single("image"), (req, res) => {
     artwork_image_url,
   } = req.body || {};
   const uploaded = req.file ? "/images/" + req.file.filename : null;
+  // use chatgpt on Use gpt naming (Aliases-AS) to insert exhibition with optional upload,
+  // then seed linked artist/artwork to satisfy JOIN requirement
   db.run(
     "INSERT INTO exhibitions (id, name, location, description, year, type, image_url) VALUES ((SELECT IFNULL(MAX(id),0)+1 FROM exhibitions), ?, ?, ?, ?, ?, ?)",
     [
@@ -1441,6 +1443,7 @@ app.post(
 
 // Delete an artwork
 app.post("/artworks/:aid/delete", requireAdmin, (req, res) => {
+  // use chatgpt on Use gpt naming (Aliases-AS) to delete artwork and redirect to its exhibition
   const aid = req.params.aid;
   const {exhibition_id} = req.body || {};
   db.run("DELETE FROM artworks WHERE id = ?", [aid], (err) => {
