@@ -10,7 +10,7 @@ Administrator login: admin
 Administrator password: "wdf#2025"
 
 - Some code in this project where generated with the help of ChatGPT
-- Several images and videos come from the web (not made by us): pexels.
+- Several images and videos come from the web (not made by us): pexels.com,pinterest.com
 
 */
 
@@ -1146,21 +1146,32 @@ app.get("/exhibitions", (req, res) => {
 // exhibitions CRUD operations
 app.post("/exhibitions", upload.single("image"), (req, res) => {
   if (!req.session?.isAdmin) return res.redirect("/login");
-  const {name, location, year, type, description, image_url} = req.body || {};
+  const {name, location, year, type, description, image_url,
+    artist_name, artist_nationality, artist_age, artist_famous_work, artist_image_url,
+    artwork_title, artwork_medium, artwork_rewords, artwork_image_url
+  } = req.body || {};
   const uploaded = req.file ? "/images/" + req.file.filename : null;
   db.run(
     "INSERT INTO exhibitions (id, name, location, description, year, type, image_url) VALUES ((SELECT IFNULL(MAX(id),0)+1 FROM exhibitions), ?, ?, ?, ?, ?, ?)",
-    [
-      name,
-      location,
-      description,
-      Number(year) || null,
-      type,
-      uploaded || image_url || null,
-    ],
-    (err) => {
+    [ name, location, description, Number(year)||null, type, uploaded || image_url || null ],
+    function(err) {
       if (err) return res.send("Insert error");
-      res.redirect("/exhibitions");
+       // fetch newly created id
+       db.get('SELECT id FROM exhibitions ORDER BY id DESC LIMIT 1', [], (e2, row) => {
+        if (e2 || !row) return res.redirect('/exhibitions');
+        const exid = row.id;
+        // optional seed artist for JOIN
+        if (artist_name) {
+          db.run('INSERT INTO artists (exhibition_id, name, nationality, age, famous_work, image_url) VALUES (?, ?, ?, ?, ?, ?)',
+            [exid, artist_name, artist_nationality || null, Number(artist_age)||null, artist_famous_work || null, artist_image_url || null]);
+        }
+        // optional seed artwork for JOIN
+        if (artwork_title) {
+          db.run('INSERT INTO artworks (exhibition_id, title, rewords, medium, image_url) VALUES (?, ?, ?, ?, ?)',
+            [exid, artwork_title, artwork_rewords || null, artwork_medium || null, artwork_image_url || null]);
+        }
+        res.redirect('/exhibitions/' + exid);
+      });
     }
   );
 });
@@ -1215,7 +1226,7 @@ app.post(
       ],
       (err) => {
         if (err) return res.send("Insert artwork error");
-        res.redirect("/exhibition/" + eid);
+        res.redirect("/exhibitions/" + eid);
       }
     );
   }
@@ -1240,7 +1251,7 @@ app.post(
       ],
       (err) => {
         if (err) return res.send("Update artwork error");
-        res.redirect("/exhibition/" + (exhibition_id || ""));
+        res.redirect("/exhibitions/" + (exhibition_id || ""));
       }
     );
   }
@@ -1252,7 +1263,7 @@ app.post("/artworks/:aid/delete", requireAdmin, (req, res) => {
   const {exhibition_id} = req.body || {};
   db.run("DELETE FROM artworks WHERE id = ?", [aid], (err) => {
     if (err) return res.send("Delete artwork error");
-    res.redirect("/exhibition/" + (exhibition_id || ""));
+    res.redirect("/exhibitions/" + (exhibition_id || ""));
   });
 });
 
@@ -1291,10 +1302,21 @@ app.get("/exhibitions/:exid", (req, res) => {
   `;
   //execute the query
   db.all(query, [myEid], (err, rows) => {
-    // if error or no rows found
-    if (err || rows.length === 0) {
+    if (err) {
       console.error(err?.message);
-      return res.render("one-exhibition", {error: "Exhibition not found."});
+      return res.status(500).send('DB error');
+    }
+    // if the JOIN returns no rows, query the display separately and render the empty association
+    if (rows.length === 0) {
+      return db.get('SELECT * FROM exhibitions WHERE id = ?', [myEid], (e2, ex) => {
+        if (e2 || !ex) return res.redirect('/exhibitions');
+        const model = {
+          exhibition: { id: ex.id, name: ex.name, location: ex.location, year: ex.year, type: ex.type, description: ex.description, image_url: ex.image_url },
+          artists: [],
+          artworks: []
+        };
+        return res.render('exhibition-details', model);
+      });
     }
 
     console.log(`---> Retrieved ${rows.length} rows from the database.`);

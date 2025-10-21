@@ -2,13 +2,32 @@
 
 {{#if session.isAdmin}}
   <h3>New exhibition</h3>
-  <form method="POST" action="/exhibitions">
-    <label>Name <input name="name" required /></label><br />
-    <label>Location <input name="location" required /></label><br />
-    <label>Year <input name="year" type="number" required /></label><br />
-    <label>Type <input name="type" required /></label><br />
-    <label>Description <input name="description" required /></label><br />
-    <label>Image URL <input name="image_url" /></label><br />
+  <form method="POST" action="/exhibitions" enctype="multipart/form-data">
+    <fieldset>
+      <legend>Exhibition</legend>
+      <label>Name <input name="name" required /></label><br />
+      <label>Location <input name="location" required /></label><br />
+      <label>Year <input name="year" type="number" required /></label><br />
+      <label>Type <input name="type" required /></label><br />
+      <label>Description <input name="description" required /></label><br />
+      <label>Image URL <input name="image_url" placeholder="/images/... or https://..." /></label>
+      <label> or Upload <input type="file" name="image" /></label>
+    </fieldset>
+    <fieldset>
+      <legend>Artist (optional)</legend>
+      <label>Name <input name="artist_name" /></label>
+      <label>Nationality <input name="artist_nationality" /></label>
+      <label>Age <input name="artist_age" type="number" /></label>
+      <label>Famous work <input name="artist_famous_work" /></label>
+      <label>Image URL <input name="artist_image_url" placeholder="/images/artists/... or https://..." /></label>
+    </fieldset>
+    <fieldset>
+      <legend>Artwork (optional)</legend>
+      <label>Title <input name="artwork_title" /></label>
+      <label>Medium <input name="artwork_medium" /></label>
+      <label>Rewords <input name="artwork_rewords" /></label>
+      <label>Image URL <input name="artwork_image_url" placeholder="/images/... or https://..." /></label>
+    </fieldset>
     <button type="submit">Create</button>
   </form>
   <hr />
