@@ -278,7 +278,7 @@ function initTableArtists(mydb) {
       nationality: "Germany",
       age: 38,
       famous_work: "Abstract Emotion",
-      image_url: "/images/artist3.jpg",
+      image_url: "/images/artist9.jpg",
     },
     {
       exhibition_id: 4,
@@ -286,7 +286,7 @@ function initTableArtists(mydb) {
       nationality: "Japan",
       age: 37,
       famous_work: "Generative Sea Waves",
-      image_url: "/images/artists/hiroshi.jpg",
+      image_url: "/images/artist10.jpg",
     },
     {
       exhibition_id: 4,
@@ -294,7 +294,7 @@ function initTableArtists(mydb) {
       nationality: "Japan",
       age: 31,
       famous_work: "AI Ocean",
-      image_url: "/images/artists/yuki.jpg",
+      image_url: "/images/artist11.jpg",
     },
     {
       exhibition_id: 4,
@@ -302,7 +302,7 @@ function initTableArtists(mydb) {
       nationality: "Japan",
       age: 40,
       famous_work: "Digital Tide",
-      image_url: "/images/artists/takumi.jpg",
+      image_url: "/images/artist12.jpg",
     },
     {
       exhibition_id: 5,
@@ -310,7 +310,7 @@ function initTableArtists(mydb) {
       nationality: "Sweden",
       age: 42,
       famous_work: "Northern Lines Prints",
-      image_url: "/images/artists/erik.jpg",
+      image_url: "/images/artist13.jpg",
     },
     {
       exhibition_id: 5,
@@ -318,7 +318,7 @@ function initTableArtists(mydb) {
       nationality: "Sweden",
       age: 35,
       famous_work: "Nordic Geometry",
-      image_url: "/images/artists/astrid.jpg",
+      image_url: "/images/artist14.jpg",
     },
     {
       exhibition_id: 5,
@@ -326,7 +326,7 @@ function initTableArtists(mydb) {
       nationality: "Sweden",
       age: 47,
       famous_work: "Minimalist Lines",
-      image_url: "/images/artists/bjorn.jpg",
+      image_url: "/images/artist15.jpg",
     },
     {
       exhibition_id: 6,
@@ -334,7 +334,7 @@ function initTableArtists(mydb) {
       nationality: "South Korea",
       age: 36,
       famous_work: "Steel Garden Installation",
-      image_url: "/images/artists/jihoon.jpg",
+      image_url: "/images/artist16.jpg",
     },
     {
       exhibition_id: 6,
@@ -342,7 +342,7 @@ function initTableArtists(mydb) {
       nationality: "South Korea",
       age: 30,
       famous_work: "Industrial Nature",
-      image_url: "/images/artists/minseo.jpg",
+      image_url: "/images/artist17.jpg",
     },
     {
       exhibition_id: 6,
@@ -350,7 +350,7 @@ function initTableArtists(mydb) {
       nationality: "South Korea",
       age: 33,
       famous_work: "Organic Steel",
-      image_url: "/images/artists/hyejin.jpg",
+      image_url: "/images/artist2.jpg",
     },
     {
       exhibition_id: 7,
@@ -358,7 +358,7 @@ function initTableArtists(mydb) {
       nationality: "Denmark",
       age: 50,
       famous_work: "Nordic Nature Fusion",
-      image_url: "/images/artists/lars.jpg",
+      image_url: "/images/artist3.jpg",
     },
     {
       exhibition_id: 7,
@@ -366,7 +366,7 @@ function initTableArtists(mydb) {
       nationality: "Denmark",
       age: 29,
       famous_work: "Scandinavian Wilderness",
-      image_url: "/images/artists/freja.jpg",
+      image_url: "/images/artist4.jpg",
     },
     {
       exhibition_id: 8,
@@ -374,7 +374,7 @@ function initTableArtists(mydb) {
       nationality: "China",
       age: 35,
       famous_work: "East Meets West",
-      image_url: "/images/artists/chen.jpg",
+      image_url: "/images/artist5.jpg",
     },
     {
       exhibition_id: 8,
@@ -382,7 +382,7 @@ function initTableArtists(mydb) {
       nationality: "China",
       age: 32,
       famous_work: "Ink & Oil Fusion",
-      image_url: "/images/artists/lina.jpg",
+      image_url: "/images/artist6.jpg",
     },
     {
       exhibition_id: 9,
@@ -390,7 +390,7 @@ function initTableArtists(mydb) {
       nationality: "USA",
       age: 48,
       famous_work: "Abstract Evolution",
-      image_url: "/images/artists/john.jpg",
+      image_url: "/images/artist7.jpg",
     },
     {
       exhibition_id: 9,
@@ -398,7 +398,7 @@ function initTableArtists(mydb) {
       nationality: "USA",
       age: 38,
       famous_work: "Modern Abstract",
-      image_url: "/images/artists/emily.jpg",
+      image_url: "/images/artist8.jpg",
     },
     {
       exhibition_id: 10,
@@ -406,7 +406,7 @@ function initTableArtists(mydb) {
       nationality: "South Africa",
       age: 41,
       famous_work: "Colors of Africa",
-      image_url: "/images/artists/thabo.jpg",
+      image_url: "/images/artist9.jpg",
     },
     {
       exhibition_id: 10,
@@ -414,7 +414,7 @@ function initTableArtists(mydb) {
       nationality: "South Africa",
       age: 33,
       famous_work: "African Rhythm",
-      image_url: "/images/artists/ayesha.jpg",
+      image_url: "/images/artist10.jpg",
     },
   ];
 
@@ -694,77 +694,77 @@ function initTableShopItems(mydb) {
       name: "Art Poster - Light and Shadow",
       price: 120,
       category: "Poster",
-      image_url: "/images/shop/poster1.jpg",
+      image_url: "/images/shop1.jpg",
     },
     {
       id: 2,
       name: "Marble Sculpture Miniature",
       price: 450,
       category: "Sculpture",
-      image_url: "/images/shop/sculpture1.jpg",
+      image_url: "/images/shop2.jpg",
     },
     {
       id: 3,
       name: "Abstract Painting Print",
       price: 300,
       category: "Print",
-      image_url: "/images/shop/painting1.jpg",
+      image_url: "/images/shop3.jpg",
     },
     {
       id: 4,
       name: "Digital Art Tote Bag",
       price: 150,
       category: "Merchandise",
-      image_url: "/images/shop/totebag.jpg",
+      image_url: "/images/shop4.jpg",
     },
     {
       id: 5,
       name: "Graphic Design Notebook",
       price: 80,
       category: "Stationery",
-      image_url: "/images/shop/notebook.jpg",
+      image_url: "/images/shop5.jpg",
     },
     {
       id: 6,
       name: "Steel Garden Keychain",
       price: 60,
       category: "Accessory",
-      image_url: "/images/shop/keychain.jpg",
+      image_url: "/images/shop6.jpg",
     },
     {
       id: 7,
       name: "Nordic Nature Mug",
       price: 100,
       category: "Home",
-      image_url: "/images/shop/mug.jpg",
+      image_url: "/images/shop7.jpg",
     },
     {
       id: 8,
       name: "East Meets West Calendar",
       price: 90,
       category: "Stationery",
-      image_url: "/images/shop/calendar.jpg",
+      image_url: "/images/shop8.jpg",
     },
     {
       id: 9,
       name: "Abstract Evolution T-shirt",
       price: 180,
       category: "Clothing",
-      image_url: "/images/shop/tshirt.jpg",
+      image_url: "/images/shop9.jpg",
     },
     {
       id: 10,
       name: "Colors of Africa Cushion",
       price: 200,
       category: "Home",
-      image_url: "/images/shop/cushion.jpg",
+      image_url: "/images/shop10.jpg",
     },
     {
       id: 11,
       name: "Museum Eco Tote",
       price: 130,
       category: "Merchandise",
-      image_url: "/images/shop/ecotote.jpg",
+      image_url: "/images/shop11.jpg",
     },
   ];
   //create table-4(shop ietms) and insert data at startup
@@ -820,11 +820,37 @@ function initTableUserReviews(mydb) {
       comment: "Beautiful poster with vibrant colors!",
     },
     {
+      shop_item_id: 1,
+      username: "Daniel",
+      score: "85",
+      comment: "Love the artistic vibe, fits perfectly in my studio.",
+    },
+    {
+      shop_item_id: 1,
+      username: "Chloe",
+      score: "80",
+      comment: "Nice quality print, though shipping took a bit long.",
+    },
+
+    {
       shop_item_id: 2,
       username: "Lucas",
       score: "82",
       comment: "The marble detail is stunning, worth the price.",
     },
+    {
+      shop_item_id: 2,
+      username: "Hannah",
+      score: "88",
+      comment: "Heavy and solid, feels premium in hand.",
+    },
+    {
+      shop_item_id: 2,
+      username: "Jack",
+      score: "79",
+      comment: "Great craftsmanship but smaller than expected.",
+    },
+
     {
       shop_item_id: 3,
       username: "Mia",
@@ -832,11 +858,37 @@ function initTableUserReviews(mydb) {
       comment: "Great quality print, looks amazing on my wall.",
     },
     {
+      shop_item_id: 3,
+      username: "Evelyn",
+      score: "90",
+      comment: "Crisp colors and good paper texture.",
+    },
+    {
+      shop_item_id: 3,
+      username: "Owen",
+      score: "84",
+      comment: "Nice design, arrived well packed.",
+    },
+
+    {
       shop_item_id: 4,
       username: "Noah",
       score: "90",
       comment: "Tote bag is durable and stylish.",
     },
+    {
+      shop_item_id: 4,
+      username: "Ella",
+      score: "92",
+      comment: "Perfect for grocery shopping and daily use!",
+    },
+    {
+      shop_item_id: 4,
+      username: "Henry",
+      score: "85",
+      comment: "Good quality but wish the straps were longer.",
+    },
+
     {
       shop_item_id: 5,
       username: "Sophia",
@@ -844,16 +896,54 @@ function initTableUserReviews(mydb) {
       comment: "Notebook paper quality is smooth and nice.",
     },
     {
+      shop_item_id: 5,
+      username: "Grace",
+      score: "88",
+      comment: "Pretty cover and nice for journaling.",
+    },
+    {
+      shop_item_id: 5,
+      username: "Benjamin",
+      score: "83",
+      comment: "Good binding, pages don’t tear easily.",
+    },
+
+    {
       shop_item_id: 6,
       username: "Oliver",
       score: "83",
       comment: "Keychain is cute but a bit small.",
     },
     {
+      shop_item_id: 6,
+      username: "Aria",
+      score: "85",
+      comment: "Lovely accessory for my backpack!",
+    },
+    {
+      shop_item_id: 6,
+      username: "Leo",
+      score: "79",
+      comment: "Nice design, slightly overpriced though.",
+    },
+
+    {
       shop_item_id: 7,
       username: "Isabella",
       score: "84",
       comment: "Mug design is minimal and elegant.",
+    },
+    {
+      shop_item_id: 7,
+      username: "Aiden",
+      score: "89",
+      comment: "Keeps coffee warm longer than expected!",
+    },
+    {
+      shop_item_id: 7,
+      username: "Nora",
+      score: "80",
+      comment: "Cute mug, arrived in perfect condition.",
     },
 
     {
@@ -863,11 +953,37 @@ function initTableUserReviews(mydb) {
       comment: "Love the calendar artwork!",
     },
     {
+      shop_item_id: 8,
+      username: "Lily",
+      score: "90",
+      comment: "Perfect size for my desk, very aesthetic.",
+    },
+    {
+      shop_item_id: 8,
+      username: "Samuel",
+      score: "85",
+      comment: "Great illustrations, could have thicker paper.",
+    },
+
+    {
       shop_item_id: 9,
       username: "Ava",
       score: "93",
       comment: "T-shirt fabric feels soft and premium.",
     },
+    {
+      shop_item_id: 9,
+      username: "James",
+      score: "88",
+      comment: "Nice fit and breathable material.",
+    },
+    {
+      shop_item_id: 9,
+      username: "Scarlett",
+      score: "90",
+      comment: "Lovely print quality and comfortable wear.",
+    },
+
     {
       shop_item_id: 10,
       username: "Liam",
@@ -875,10 +991,35 @@ function initTableUserReviews(mydb) {
       comment: "The cushion brightens my room!",
     },
     {
+      shop_item_id: 10,
+      username: "Victoria",
+      score: "89",
+      comment: "Very soft and fluffy, great for sofa decor.",
+    },
+    {
+      shop_item_id: 10,
+      username: "Elijah",
+      score: "86",
+      comment: "Beautiful pattern but the cover is slightly loose.",
+    },
+
+    {
       shop_item_id: 11,
       username: "Amelia",
       score: "89",
       comment: "Perfect tote for everyday use!",
+    },
+    {
+      shop_item_id: 11,
+      username: "Mason",
+      score: "91",
+      comment: "Great size and sturdy stitching.",
+    },
+    {
+      shop_item_id: 11,
+      username: "Harper",
+      score: "87",
+      comment: "Stylish and practical, matches many outfits.",
     },
   ];
 
@@ -1146,32 +1287,73 @@ app.get("/exhibitions", (req, res) => {
 // exhibitions CRUD operations
 app.post("/exhibitions", upload.single("image"), (req, res) => {
   if (!req.session?.isAdmin) return res.redirect("/login");
-  const {name, location, year, type, description, image_url,
-    artist_name, artist_nationality, artist_age, artist_famous_work, artist_image_url,
-    artwork_title, artwork_medium, artwork_rewords, artwork_image_url
+  const {
+    name,
+    location,
+    year,
+    type,
+    description,
+    image_url,
+    artist_name,
+    artist_nationality,
+    artist_age,
+    artist_famous_work,
+    artist_image_url,
+    artwork_title,
+    artwork_medium,
+    artwork_rewords,
+    artwork_image_url,
   } = req.body || {};
   const uploaded = req.file ? "/images/" + req.file.filename : null;
   db.run(
     "INSERT INTO exhibitions (id, name, location, description, year, type, image_url) VALUES ((SELECT IFNULL(MAX(id),0)+1 FROM exhibitions), ?, ?, ?, ?, ?, ?)",
-    [ name, location, description, Number(year)||null, type, uploaded || image_url || null ],
-    function(err) {
+    [
+      name,
+      location,
+      description,
+      Number(year) || null,
+      type,
+      uploaded || image_url || null,
+    ],
+    function (err) {
       if (err) return res.send("Insert error");
-       // fetch newly created id
-       db.get('SELECT id FROM exhibitions ORDER BY id DESC LIMIT 1', [], (e2, row) => {
-        if (e2 || !row) return res.redirect('/exhibitions');
-        const exid = row.id;
-        // optional seed artist for JOIN
-        if (artist_name) {
-          db.run('INSERT INTO artists (exhibition_id, name, nationality, age, famous_work, image_url) VALUES (?, ?, ?, ?, ?, ?)',
-            [exid, artist_name, artist_nationality || null, Number(artist_age)||null, artist_famous_work || null, artist_image_url || null]);
+      // fetch newly created id
+      db.get(
+        "SELECT id FROM exhibitions ORDER BY id DESC LIMIT 1",
+        [],
+        (e2, row) => {
+          if (e2 || !row) return res.redirect("/exhibitions");
+          const exid = row.id;
+          // optional seed artist for JOIN
+          if (artist_name) {
+            db.run(
+              "INSERT INTO artists (exhibition_id, name, nationality, age, famous_work, image_url) VALUES (?, ?, ?, ?, ?, ?)",
+              [
+                exid,
+                artist_name,
+                artist_nationality || null,
+                Number(artist_age) || null,
+                artist_famous_work || null,
+                artist_image_url || null,
+              ]
+            );
+          }
+          // optional seed artwork for JOIN
+          if (artwork_title) {
+            db.run(
+              "INSERT INTO artworks (exhibition_id, title, rewords, medium, image_url) VALUES (?, ?, ?, ?, ?)",
+              [
+                exid,
+                artwork_title,
+                artwork_rewords || null,
+                artwork_medium || null,
+                artwork_image_url || null,
+              ]
+            );
+          }
+          res.redirect("/exhibitions/" + exid);
         }
-        // optional seed artwork for JOIN
-        if (artwork_title) {
-          db.run('INSERT INTO artworks (exhibition_id, title, rewords, medium, image_url) VALUES (?, ?, ?, ?, ?)',
-            [exid, artwork_title, artwork_rewords || null, artwork_medium || null, artwork_image_url || null]);
-        }
-        res.redirect('/exhibitions/' + exid);
-      });
+      );
     }
   );
 });
@@ -1304,19 +1486,31 @@ app.get("/exhibitions/:exid", (req, res) => {
   db.all(query, [myEid], (err, rows) => {
     if (err) {
       console.error(err?.message);
-      return res.status(500).send('DB error');
+      return res.status(500).send("DB error");
     }
     // if the JOIN returns no rows, query the display separately and render the empty association
     if (rows.length === 0) {
-      return db.get('SELECT * FROM exhibitions WHERE id = ?', [myEid], (e2, ex) => {
-        if (e2 || !ex) return res.redirect('/exhibitions');
-        const model = {
-          exhibition: { id: ex.id, name: ex.name, location: ex.location, year: ex.year, type: ex.type, description: ex.description, image_url: ex.image_url },
-          artists: [],
-          artworks: []
-        };
-        return res.render('exhibition-details', model);
-      });
+      return db.get(
+        "SELECT * FROM exhibitions WHERE id = ?",
+        [myEid],
+        (e2, ex) => {
+          if (e2 || !ex) return res.redirect("/exhibitions");
+          const model = {
+            exhibition: {
+              id: ex.id,
+              name: ex.name,
+              location: ex.location,
+              year: ex.year,
+              type: ex.type,
+              description: ex.description,
+              image_url: ex.image_url,
+            },
+            artists: [],
+            artworks: [],
+          };
+          return res.render("exhibition-details", model);
+        }
+      );
     }
 
     console.log(`---> Retrieved ${rows.length} rows from the database.`);

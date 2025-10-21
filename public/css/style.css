@@ -339,14 +339,131 @@ body {
     font-size: 0.9rem;
   }
 }
-/* details image size */
-.detail-img {
-  max-width: 300px;
-  width: auto;
-  height: auto;
-  display: block;
+/* exhibition detail page */
+.artist-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
 }
 
+.artist-list li {
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.artist-img {
+  width: 100%;
+  max-width: 180px;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 10px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.artist-img:hover {
+  transform: scale(1.05);
+}
+
+.exhibition-detail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 100px 40px 40px;
+  flex-wrap: wrap;
+}
+
+.detail-img {
+  width: 35%;
+  max-width: 320px;
+  max-height: 350px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.exhibition-text {
+  flex: 1;
+  max-width: 500px;
+}
+
+.exhibition-text h1 {
+  font-size: 2rem;
+  margin-bottom: 16px;
+}
+
+.exhibition-text p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+/* responsive for exhibition detail page */
+
+@media (max-width: 900px) and (min-width: 701px) {
+  .artist-list {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+  }
+
+  .detail-img {
+    width: 40%;
+    max-width: 300px;
+    max-height: 300px;
+  }
+
+  .exhibition-text {
+    max-width: 400px;
+  }
+
+  .exhibition-text h1 {
+    font-size: 1.8rem;
+  }
+
+  .exhibition-text p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .artist-list {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .exhibition-detail {
+    flex-direction: column;
+    align-items: center;
+    padding: 80px 20px 20px;
+    gap: 24px;
+  }
+
+  .detail-img {
+    width: 80%;
+    max-width: 250px;
+    max-height: 250px;
+  }
+
+  .exhibition-text {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .exhibition-text h1 {
+    font-size: 1.6rem;
+  }
+
+  .exhibition-text p {
+    font-size: 0.9rem;
+  }
+}
 /* shop page */
 .shop-grid {
   display: grid;
