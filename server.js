@@ -1606,6 +1606,7 @@ db.run("ALTER TABLE users ADD COLUMN isAdmin INTEGER DEFAULT 0", (e) => {
 });
 
 // Where credentials are embedded: the line below stores the bcrypt hash for "wdf#2025"
+// Used chatgpt as help to ensures an 'admin' account exists with bcrypt-hashed password 'wdf#2025'
 const ADMIN_HASH =
   "$2b$10$EIYwU6NE6V.0gAP8zIfVTeApl6DLjjHjN7FkIyArYqRw3N24xH41W";
 db.get("SELECT id FROM users WHERE username = ?", ["admin"], (err, row) => {
