@@ -7,7 +7,7 @@ Target grade: 5
 Project Web Dev Fun - 2025
 
 Administrator login: admin
-Administrator password: "wdf#2025"
+Administrator password: "wdf#2025" ---> "$2b$10$EIYwU6NE6V.0gAP8zIfVTeApl6DLjjHjN7FkIyArYqRw3N24xH41W"
 
 - Some code in this project where generated with the help of ChatGPT
 - Several images and videos come from the web (not made by us): pexels.com,pinterest.com
